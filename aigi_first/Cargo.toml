@@ -1,0 +1,21 @@
+[package]
+name = "aigi_first"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+
+[dependencies]
+anyhow = "1.0.75"
+xcursor = "0.3.4"
+
+[dependencies.smithay]
+git = "https://github.com/Smithay/smithay"
+# Not sure if usefull
+# default-features = false
+# features = [
+#     "backend_winit",
+#     "wayland_frontend",
+#     "desktop",
+# ]
