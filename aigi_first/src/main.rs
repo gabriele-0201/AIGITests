@@ -1,5 +1,6 @@
 mod pointer;
 mod state;
+mod tiling;
 
 use pointer::{PointerElement, PointerRenderElement};
 use state::{AIGIState, ClientState};
@@ -17,7 +18,7 @@ use smithay::{
     },
     delegate_compositor, delegate_data_device, delegate_output, delegate_seat, delegate_shm,
     delegate_xdg_shell,
-    desktop::{space::render_output, Space, Window, WindowSurfaceType},
+    desktop::{layer_map_for_output, space::render_output, Space, Window, WindowSurfaceType},
     input::{
         keyboard::{keysyms, FilterResult},
         pointer::MotionEvent,
@@ -58,6 +59,11 @@ use std::{os::fd::AsRawFd, sync::Arc};
 pub struct CalloopData {
     state: AIGIState,
     display: Display<AIGIState>,
+}
+
+pub enum Action {
+    exec_process(&'static str),
+    change_split(tiling::Split),
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -153,7 +159,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .handle()
         .insert_source(timer, move |_, _, data| {
             let display = &mut data.display;
-            let state = &mut data.state;
+            let mut state = &mut data.state;
 
             // Process events from winit event loop
             winit
@@ -168,6 +174,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             None,
                             None,
                         );
+                        layer_map_for_output(&output).arrange();
                     }
                     WinitEvent::Input(event) => {
                         match event {
@@ -177,7 +184,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                 let serial = SERIAL_COUNTER.next_serial();
                                 let time = Event::time_msec(&event);
                                 let press_state = event.state();
-                                let action = state.seat.get_keyboard().unwrap().input::<u8, _>(
+                                let action = state.seat.get_keyboard().unwrap().input::<Action, _>(
                                     state,
                                     event.key_code(),
                                     press_state,
@@ -187,20 +194,43 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                         // If the user pressed the letter T, return the action value of
                                         // 1.
                                         if press_state == KeyState::Pressed
-                                            && keysym.modified_sym() == keysyms::KEY_T
+                                            && keysym.modified_sym() == keysyms::KEY_W
                                         {
-                                            FilterResult::Intercept(1)
+                                            FilterResult::Intercept(Action::exec_process("weston-terminal"))
+                                        } else if press_state == KeyState::Pressed
+                                            && keysym.modified_sym() == keysyms::KEY_A
+                                        {
+                                            FilterResult::Intercept(Action::exec_process("alacritty"))
+
+                                        } else if press_state == KeyState::Pressed
+                                            && keysym.modified_sym() == keysyms::KEY_V {
+                                            FilterResult::Intercept(Action::change_split(tiling::Split::Vertical))
+                                        } else if press_state == KeyState::Pressed
+                                            && keysym.modified_sym() == keysyms::KEY_O {
+                                            FilterResult::Intercept(Action::change_split(tiling::Split::Horizontal))
                                         } else {
                                             FilterResult::Forward
                                         }
                                     },
                                 );
 
-                                // If the action equals 1, spawn a weston-terminal.
-                                if Some(1) == action {
-                                    std::process::Command::new("weston-terminal")
-                                        .spawn()
-                                        .unwrap();
+                                match action {
+                                    Some(Action::exec_process(process_name)) => {
+                                        std::process::Command::new(process_name).spawn().unwrap();
+                                    }
+                                    Some(Action::change_split(new_split)) => {
+                                        match  state
+                                            .seat
+                                            .get_keyboard()
+                                            .unwrap()
+                                            .current_focus() {
+                                                Some(wl_surface) => {
+                                                    state.tiling_info.get_mut(&wl_surface).expect("Impossible havinfg a window not present in tiling info").split = new_split;
+                                                }
+                                                None => ()
+                                            }
+                                    }
+                                    _ => ()
                                 }
                             }
                             InputEvent::PointerMotionAbsolute { event, .. } => {
@@ -230,7 +260,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                             .map(|(s, p)| (s, p + location))
                                     });
 
-                                let serial = SERIAL_COUNTER.next_serial();
+                                let mut serial = SERIAL_COUNTER.next_serial();
+                                state.seat.get_keyboard().unwrap().set_focus(
+                                    &mut state,
+                                    surface_under_pointer
+                                        .as_ref()
+                                        .and_then(|s| Some(s.0.clone())),
+                                    serial,
+                                );
+
+                                serial = SERIAL_COUNTER.next_serial();
 
                                 // Send the motion event to the client.
                                 pointer.motion(
