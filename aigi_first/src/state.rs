@@ -182,9 +182,9 @@ impl XdgShellHandler for AIGIState {
                 let output = self.space.outputs().next();
                 let output_geometry = output
                     .and_then(|o| {
-                        let geo = dbg!(self.space.output_geometry(&o)?);
+                        let geo = self.space.output_geometry(&o)?;
                         let map = layer_map_for_output(&o);
-                        let zone = dbg!(map.non_exclusive_zone());
+                        let zone = map.non_exclusive_zone();
                         Some(Rectangle::from_loc_and_size(geo.loc + zone.loc, zone.size))
                     })
                     .unwrap_or_else(|| Rectangle::from_loc_and_size((0, 0), (800, 800)));
@@ -218,6 +218,12 @@ impl XdgShellHandler for AIGIState {
     }
 
     fn grab(&mut self, _surface: PopupSurface, _seat: wl_seat::WlSeat, _serial: Serial) {}
+
+    fn toplevel_destroyed(&mut self, surface: ToplevelSurface) {
+        let node_to_update = self.tiling_state.destroy(surface.wl_surface()).unwrap();
+        self.tiling_state
+            .update_space(node_to_update, &mut self.space);
+    }
 }
 delegate_xdg_shell!(AIGIState);
 

@@ -29,7 +29,7 @@ impl TilingState {
             Some(_) => return Err("WOOOOOW head already exists"),
             None => {
                 let tile = Tile::new(
-                    Split::Horizontal,
+                    Split::Vertical,
                     geometry,
                     None,
                     Sibiling::Unique,
@@ -57,8 +57,8 @@ impl TilingState {
         let tile_to_split = self
             .tile_info
             .get(to_split_window.toplevel().wl_surface())
-            .expect("IMP not having a wl_surface in TileInfo");
-        println!("Tile to split: {tile_to_split:?}");
+            .expect("IMP not having a wl_surface in TileInfo")
+            .clone();
         let new_tile: Rc<RefCell<Tile>>;
 
         // Create this scope to being able to
@@ -102,11 +102,38 @@ impl TilingState {
                         Sibiling::Right,
                         new_window,
                     )));
-                    println!("Tiles should be created \n left tile: {tile_to_split:?} \n right tile: {new_tile:?}");
                 }
-                Split::Vertical => todo!(),
+                Split::Vertical => {
+                    // update tile_to_split
+                    let new_height = (container_geometry.size.h as f32 / 2.0).floor() as i32;
+                    tile_to_split.geometry.size.h = new_height;
+                    tile_to_split.sibiling = Sibiling::Left;
+                    tile_to_split.container = None;
+
+                    // create new tile
+                    let new_tile_geometry = Rectangle::from_loc_and_size(
+                        (
+                            tile_to_split.geometry.loc.x,
+                            tile_to_split.geometry.loc.y + new_height,
+                        ),
+                        tile_to_split.geometry.size,
+                    );
+                    new_tile = Rc::new(RefCell::new(Tile::new(
+                        tile_to_split.split.clone(),
+                        new_tile_geometry,
+                        None,
+                        Sibiling::Right,
+                        new_window,
+                    )));
+                }
             }
         }
+
+        // Insert the new Window and Tile in the Map
+        self.tile_info.insert(
+            new_tile.borrow().window.toplevel().wl_surface().clone(),
+            Rc::clone(&new_tile),
+        );
 
         // Create Structure Node
         let structure_node = Node::Internal(Rc::new(RefCell::new(Structure::new(
@@ -115,8 +142,6 @@ impl TilingState {
             Node::Leaf(Rc::clone(&tile_to_split)), // left
             Node::Leaf(Rc::clone(&new_tile)),      // right
         ))));
-
-        println!("Structure node: {structure_node:?}");
 
         // update tile and new tile
         tile_to_split.borrow_mut().container = Some(Node::clone(&structure_node));
@@ -138,10 +163,49 @@ impl TilingState {
         Node::clone(&structure_node)
     }
 
-    /// This method is called on a Tile,
-    /// from this tile will be created a Stucture Node containing
-    /// two children the current Tile and the new tile (both with updated sizes)
-    pub fn destroy(&mut self, new_surface: ToplevelSurface) {}
+    pub fn change_split(&mut self, wl_surface: &WlSurface, new_split: Split) {
+        self.tile_info
+            .get_mut(wl_surface)
+            .expect("IMP having surface NOT present in tile_info map")
+            .borrow_mut()
+            .split = new_split;
+    }
+
+    /// given a wl surface the sibiling node will assume the geometry of the container
+    /// the container will be eliminated and the upper container will point to the remaining Tile
+    pub fn destroy(&mut self, wl_surface: &WlSurface) -> Result<Node, &'static str> {
+        // TODO
+
+        let tile_to_destroy = self
+            .tile_info
+            .get_mut(wl_surface)
+            .expect("IMP having surface NOT present in tile_info map")
+            .borrow();
+
+        let container = if let Node::Internal(c) =
+            tile_to_destroy.container
+            .as_ref()
+            .expect("IMP work with unique window for now")
+             {
+                c.clone()
+             } else {
+                 panic!("this should not be possible")
+             };
+
+        let sibilig_tile = match tile_to_destroy.sibiling {
+            Sibiling::Left => Sibiling::Right,
+            Sibiling::Right => Sibiling::Left,
+            Sibiling::Unique => todo!("here you're trying to close the unique window"),
+        };
+
+        let tile = match sibilig_tile{
+            Sibiling::Left => c.borrow().left.clone(),
+            Sibiling::Right => c.borrow().right.clone(),
+            Sibiling::Unique => panic!("WHAT!?"),
+        }
+
+        todo!()
+    }
 
     /// This function should update the space
     /// of all the subtree under the node
@@ -149,17 +213,14 @@ impl TilingState {
         match node {
             Node::Internal(structure) => {
                 let structure = structure.borrow();
+                println!("ENTER STRUCTURE");
                 // TODO: REMOVE THIS CLONE
-                println!("INTERNAL");
                 self.update_space(structure.left.clone(), space);
-                panic!("LEFT DONE");
-                println!("LEFT DONE");
                 self.update_space(structure.right.clone(), space);
-                println!("RIGHT DONE");
             }
             Node::Leaf(tile) => {
                 println!("ENTER TILE");
-                let tile = dbg!(tile.borrow());
+                let tile = tile.borrow();
                 tile.window
                     .toplevel()
                     .with_pending_state(|top_level_state| {
@@ -171,7 +232,7 @@ impl TilingState {
                 // the window is just created
                 tile.window.toplevel().send_configure();
                 // TODO: ACTIVATE???
-                space.map_element(tile.window.clone(), tile.geometry.loc, true);
+                space.map_element(tile.window.clone(), tile.geometry.loc, false);
             }
         }
     }
