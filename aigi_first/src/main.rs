@@ -196,18 +196,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                         if press_state == KeyState::Pressed
                                             && keysym.modified_sym() == keysyms::KEY_W
                                         {
-                                            FilterResult::Intercept(Action::exec_process("weston-terminal"))
+                                            FilterResult::Intercept(Action::exec_process(
+                                                "weston-terminal",
+                                            ))
                                         } else if press_state == KeyState::Pressed
                                             && keysym.modified_sym() == keysyms::KEY_A
                                         {
-                                            FilterResult::Intercept(Action::exec_process("alacritty"))
-
+                                            FilterResult::Intercept(Action::exec_process(
+                                                "alacritty",
+                                            ))
                                         } else if press_state == KeyState::Pressed
-                                            && keysym.modified_sym() == keysyms::KEY_V {
-                                            FilterResult::Intercept(Action::change_split(tiling::Split::Vertical))
+                                            && keysym.modified_sym() == keysyms::KEY_V
+                                        {
+                                            FilterResult::Intercept(Action::change_split(
+                                                tiling::Split::Vertical,
+                                            ))
                                         } else if press_state == KeyState::Pressed
-                                            && keysym.modified_sym() == keysyms::KEY_O {
-                                            FilterResult::Intercept(Action::change_split(tiling::Split::Horizontal))
+                                            && keysym.modified_sym() == keysyms::KEY_O
+                                        {
+                                            FilterResult::Intercept(Action::change_split(
+                                                tiling::Split::Horizontal,
+                                            ))
                                         } else {
                                             FilterResult::Forward
                                         }
@@ -219,18 +228,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                         std::process::Command::new(process_name).spawn().unwrap();
                                     }
                                     Some(Action::change_split(new_split)) => {
-                                        match  state
-                                            .seat
-                                            .get_keyboard()
-                                            .unwrap()
-                                            .current_focus() {
-                                                Some(wl_surface) => {
-                                                    state.tiling_info.get_mut(&wl_surface).expect("Impossible havinfg a window not present in tiling info").split = new_split;
-                                                }
-                                                None => ()
+                                        match state.seat.get_keyboard().unwrap().current_focus() {
+                                            Some(wl_surface) => {
+                                                //state.tiling_info.get_mut(&wl_surface).expect("Impossible havinfg a window not present in tiling info").split = new_split;
                                             }
+                                            None => (),
+                                        }
                                     }
-                                    _ => ()
+                                    _ => (),
                                 }
                             }
                             InputEvent::PointerMotionAbsolute { event, .. } => {
@@ -242,7 +247,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
                                 state.pointer_location = pointer_location;
 
-                                println!("Pointer Location: {pointer_location:?}");
+                                //println!("Pointer Location: {pointer_location:?}");
 
                                 let pointer = state.seat.get_pointer().unwrap();
 

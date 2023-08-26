@@ -1,4 +1,4 @@
-use super::tiling::{Split, TilingInfo};
+use super::tiling::{Split, TilingState};
 use super::CalloopData;
 
 use anyhow::{Error, Result};
@@ -64,7 +64,7 @@ pub struct AIGIState {
     pub pointer_location: Point<f64, Logical>,
     pub cursor_status: CursorImageStatus,
 
-    pub tiling_info: HashMap<WlSurface, TilingInfo>,
+    pub tiling_state: TilingState,
 }
 
 impl SeatHandler for AIGIState {
@@ -153,141 +153,32 @@ impl XdgShellHandler for AIGIState {
     }
 
     fn new_toplevel(&mut self, surface: ToplevelSurface) {
-        let wl_surface = surface.wl_surface().clone();
         let window = Window::new(surface);
-        //self.space.map_element(window, (0, 0), false);
 
-        // How to implement a basic tiling window manager?
-        // Just for each window associate a slit type
-        //
-        // when a new window needs to be spawned then the previously focused
-        // will be used and splitted in the direction specified in the previous
-        // window
-        //
-        // When it is canceled?
-        // THEN there is a HUGE problem LOL (later I will think how to implement this)
-
-        // Split Orintation of the previously focused window
-        // None if there was now Window
-        let focus_info: Option<(Window, TilingInfo)> = self
+        let focus_window: Option<Window> = self
             .seat
             .get_keyboard()
             .unwrap()
             .current_focus()
             .and_then(|wl_surface| {
-                Some((
+                Some(
                     self.space
                         .elements()
                         .find(|w| w.toplevel().wl_surface() == &wl_surface)
                         .cloned()
                         .expect("Impossible having a surface on focus not present in the Space"),
-                    self.tiling_info
-                        .get(&wl_surface)
-                        .expect("Impossible surface not present in tiling info")
-                        .clone(),
-                ))
+                )
             });
 
-        // Store all the new position of the modified windows
+        // TODO:
+        // + Split OR insert head
+        // + Update position and sizes in the space
+        //  something like: update the space from a node
 
-        let output = self.space.outputs().next();
-        let output_geometry = output
-            .and_then(|o| {
-                let geo = dbg!(self.space.output_geometry(&o)?);
-                let map = layer_map_for_output(&o);
-                let zone = dbg!(map.non_exclusive_zone());
-                Some(Rectangle::from_loc_and_size(geo.loc + zone.loc, zone.size))
-            })
-            .unwrap_or_else(|| Rectangle::from_loc_and_size((0, 0), (800, 800)));
-        println!("output_geometry: {output_geometry:?}");
-        let mut new_positions: Vec<(Window, Point<i32, Logical>)> = vec![];
-
-        let new_tiling_info = match focus_info {
-            Some((
-                focus_window,
-                TilingInfo {
-                    split: focus_split,
-                    loc: focus_loc,
-                },
-            )) => {
-                match focus_split {
-                    // Always split on the right
-                    Split::Horizontal => {
-                        // in the focus window the only thing that needs to change is the
-                        // width, it should be halfed
-                        //
-                        // the new window whould be positioned just at the same y
-                        // with the same size of the previous and the only difference is that
-                        // it should be positioned just after the end of the previous one
-
-                        // test print output
-
-                        let focus_geometry = focus_window.geometry();
-                        println!("focus_gemotry: {focus_geometry:?}");
-
-                        let height = focus_geometry.size.h;
-                        let new_width = (focus_geometry.size.w as f32 / 2 as f32).floor() as i32;
-                        println!("new_width: {new_width:?}");
-
-                        focus_window
-                            .toplevel()
-                            .with_pending_state(|top_level_state| {
-                                top_level_state.bounds = Some((new_width, height).into());
-                                top_level_state.size = Some((new_width, height).into());
-                                // here could be setted also the decoration mode
-                            });
-                        focus_window.toplevel().send_configure();
-
-                        window.toplevel().with_pending_state(|top_level_state| {
-                            top_level_state.bounds = Some((new_width, height).into());
-                            top_level_state.size = Some(((new_width, height)).into());
-                        });
-                        // Do not send a configure here, the initial configure
-                        // of a xdg_surface has to be sent during the commit if
-                        // the surface is not already configured
-                        //window.toplevel().send_configure();
-
-                        let new_pos: Point<i32, Logical> =
-                            (focus_loc.x + new_width, focus_loc.y).into();
-                        new_positions.push((window, new_pos));
-                        TilingInfo::new(focus_split, new_pos)
-                    }
-                    Split::Vertical => {
-                        let focus_geometry = focus_window.geometry();
-                        println!("focus_gemotry: {focus_geometry:?}");
-
-                        let width = focus_geometry.size.w;
-                        let new_height = (focus_geometry.size.h as f32 / 2 as f32).floor() as i32;
-                        println!("new_height: {new_height:?}");
-
-                        focus_window
-                            .toplevel()
-                            .with_pending_state(|top_level_state| {
-                                top_level_state.bounds = Some((width, new_height).into());
-                                top_level_state.size = Some((width, new_height).into());
-                                // here could be setted also the decoration mode
-                            });
-                        focus_window.toplevel().send_configure();
-
-                        window.toplevel().with_pending_state(|top_level_state| {
-                            top_level_state.bounds = Some((width, new_height).into());
-                            top_level_state.size = Some(((width, new_height)).into());
-                        });
-                        // Do not send a configure here, the initial configure
-                        // of a xdg_surface has to be sent during the commit if
-                        // the surface is not already configured
-                        //window.toplevel().send_configure();
-
-                        let new_pos: Point<i32, Logical> =
-                            (focus_loc.x, focus_loc.y + new_height).into();
-                        new_positions.push((window, new_pos));
-                        TilingInfo::new(focus_split, new_pos)
-                    }
-                }
-            }
+        let node_to_update = match focus_window {
+            Some(focus_window) => self.tiling_state.split(focus_window, window),
             None => {
                 // rendere full size screen
-                // and insert with default orientation
                 let output = self.space.outputs().next();
                 let output_geometry = output
                     .and_then(|o| {
@@ -298,57 +189,19 @@ impl XdgShellHandler for AIGIState {
                     })
                     .unwrap_or_else(|| Rectangle::from_loc_and_size((0, 0), (800, 800)));
 
-                let (output_x, output_y) = output_geometry.size.into();
-
-                window.toplevel().with_pending_state(|top_level_state| {
-                    top_level_state.bounds = Some((output_x, output_y).into());
-                    top_level_state.size = Some((output_x, output_y).into());
-                });
                 // Do not send a configure here, the initial configure
                 // of a xdg_surface has to be sent during the commit if
                 // the surface is not already configured
                 //window.toplevel().send_configure();
-                new_positions.push((window, (0, 0).into()));
-                TilingInfo::default()
+
+                self.tiling_state
+                    .insert_head(window, output_geometry)
+                    .unwrap()
             }
         };
 
-        // Insert new surface in tiling window info map
-        self.tiling_info.insert(wl_surface, new_tiling_info);
-
-        // Update position of mofidied windows
-        for (win, new_pos) in new_positions.into_iter() {
-            self.space.map_element(win, new_pos, true);
-        }
-
-        // test split horizontally
-
-        // alternative:
-        //let (output_x, output_y) = self.space.output_geometry(output).unwrap() (.size()?);
-
-        // println!("output x: {output_x} y: {output_y}");
-
-        //let windows: Vec<Window> = self.space.elements().cloned().collect();
-        //let window_x = output_x;
-        //let window_y = output_y / windows.len() as i32;
-
-        //let mut new_positions: Vec<(Window, (i32, i32))> = vec![];
-
-        //for (index, window) in windows.into_iter().enumerate() {
-        //    let top_level = window.toplevel();
-        //    top_level.with_pending_state(|top_level_state| {
-        //        top_level_state.size = Some((window_x, window_y).into());
-        //        // here could be setted also the decoration mode
-        //    });
-        //    top_level.send_configure();
-        //    new_positions.push((window, (0, window_y * index as i32)));
-        //}
-
-        //for (win, new_pos) in new_positions.into_iter() {
-        //    self.space.map_element(win, new_pos, false);
-        //}
-
-        // self.update_tiling();
+        self.tiling_state
+            .update_space(node_to_update, &mut self.space);
     }
 
     fn new_popup(&mut self, _: PopupSurface, _: PositionerState) {}
@@ -418,6 +271,8 @@ impl AIGIState {
         // Add pointer to seat.
         seat.add_pointer();
 
+        let tiling_state = TilingState::new();
+
         Ok(AIGIState {
             display_handle: dh,
             space,
@@ -430,9 +285,7 @@ impl AIGIState {
             seat,
             pointer_location: (0.0, 0.0).into(),
             cursor_status: CursorImageStatus::Default,
-            tiling_info: HashMap::new(),
+            tiling_state,
         })
     }
-
-    fn update_tiling(&mut self) {}
 }
