@@ -4,7 +4,7 @@ use smithay::{
     utils::{Logical, Point, Rectangle},
     wayland::shell::xdg::ToplevelSurface,
 };
-use std::{cell::RefCell, collections::HashMap, rc::Rc};
+use std::{borrow::BorrowMut, cell::RefCell, collections::HashMap, rc::Rc};
 
 pub struct TilingState {
     tile_tree_head: Option<Node>,
@@ -67,6 +67,7 @@ impl TilingState {
         // new structure node
         {
             let mut tile_to_split = tile_to_split.borrow_mut();
+            //let mut tile_to_split = (*tile_to_split).borrow_mut();
 
             // Clone the info that will be stored in the new container
             container_geometry = tile_to_split.geometry.clone();
@@ -141,6 +142,7 @@ impl TilingState {
             upper_container.clone(),
             Node::Leaf(Rc::clone(&tile_to_split)), // left
             Node::Leaf(Rc::clone(&new_tile)),      // right
+            prev_sibiling.clone(), // sibiling is inherit from the sibilign side of the tile the split started from
         ))));
 
         // update tile and new tile
@@ -173,37 +175,71 @@ impl TilingState {
 
     /// given a wl surface the sibiling node will assume the geometry of the container
     /// the container will be eliminated and the upper container will point to the remaining Tile
-    pub fn destroy(&mut self, wl_surface: &WlSurface) -> Result<Node, &'static str> {
-        // TODO
+    pub fn destroy(&mut self, wl_surface: &WlSurface) -> Result<Option<Node>, &'static str> {
+        /*
+                // TODO
 
-        let tile_to_destroy = self
-            .tile_info
-            .get_mut(wl_surface)
-            .expect("IMP having surface NOT present in tile_info map")
-            .borrow();
+                // get the tile to be destroyed
+                let tile_to_destroy = self
+                    .tile_info
+                    .get_mut(wl_surface)
+                    .expect("IMP having surface NOT present in tile_info map")
+                    .borrow();
 
-        let container = if let Node::Internal(c) =
-            tile_to_destroy.container
-            .as_ref()
-            .expect("IMP work with unique window for now")
-             {
-                c.clone()
-             } else {
-                 panic!("this should not be possible")
-             };
+                // Get the sibiling that should cover the all the destroyed space
+                //
+                // We have two cases now:
+                // + The sibilign is a Tile
+                // + The sibiling is a Structure
 
-        let sibilig_tile = match tile_to_destroy.sibiling {
-            Sibiling::Left => Sibiling::Right,
-            Sibiling::Right => Sibiling::Left,
-            Sibiling::Unique => todo!("here you're trying to close the unique window"),
-        };
+                let container = match tile_to_destroy.container.as_ref() {
+                    // The container is a normal Structure
+                    Some(Node::Internal(c)) => c,
+                    // If the container is not present then
+                    // the tile is unique
+                    None => return Ok(None),
 
-        let tile = match sibilig_tile{
-            Sibiling::Left => c.borrow().left.clone(),
-            Sibiling::Right => c.borrow().right.clone(),
-            Sibiling::Unique => panic!("WHAT!?"),
-        }
+                    // If the container is a tile
+                    // then there is something wrong
+                    Some(_) => panic!("WHAT!? the container CAN'T be a tile"),
+                };
 
+                let sibiling_node = match tile_to_destroy.sibiling {
+                    Sibiling::Left => Node::clone(&container.borrow().right),
+                    Sibiling::Right => Node::clone(&container.borrow().left),
+                    Sibiling::Unique => {
+                        panic!("Unique tile should be already handled in the previous expression")
+                    }
+                };
+
+                // Two cases, the sibiling node is a Tile or a Structure
+                match sibiling_node {
+                    Node::Leaf(tile) => {
+                        let mut tile = tile.borrow_mut();
+                        tile.geometry = container.borrow().geometry;
+                        tile.container = container.borrow().container.clone();
+
+                        match tile.container.as_ref() {
+                            Some(Node::Internal(c)) => {
+                                let container_node = c.borrow();
+                                // the upper container will be the new container of the remaining tile
+                                let upper_container = match container_node.sibilig {
+                                    Sibiling::Right => Node::clone(&container_node.right),
+                                    Sibiling::Left => Node::clone(&container_node.left),
+                                    Sibiling::Unique => {
+                                        panic!("WHAT? the upper container unique should be already solved")
+                                    }
+                                };
+                            }
+                            Some(Node::Leaf(_)) => {
+                                panic!("someting broken");
+                            }
+                            None => (),
+                        }
+                    }
+                    Node::Internal(structure) => todo!("structure sibiling to be implemented"),
+                }
+        */
         todo!()
     }
 
@@ -268,6 +304,7 @@ pub struct Structure {
     container: Option<Node>,
     left: Node,
     right: Node,
+    sibiling: Sibiling,
 }
 
 impl Structure {
@@ -276,12 +313,14 @@ impl Structure {
         container: Option<Node>,
         left: Node,
         right: Node,
+        sibiling: Sibiling,
     ) -> Self {
         Structure {
             geometry,
             container,
             left,
             right,
+            sibiling,
         }
     }
 }
