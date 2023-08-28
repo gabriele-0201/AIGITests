@@ -4,7 +4,7 @@ use smithay::{
     utils::{Logical, Point, Rectangle},
     wayland::shell::xdg::ToplevelSurface,
 };
-use std::{borrow::BorrowMut, cell::RefCell, collections::HashMap, rc::Rc};
+use std::{cell::RefCell, collections::HashMap, rc::Rc};
 
 pub struct TilingState {
     tile_tree_head: Option<Node>,
@@ -67,7 +67,6 @@ impl TilingState {
         // new structure node
         {
             let mut tile_to_split = tile_to_split.borrow_mut();
-            //let mut tile_to_split = (*tile_to_split).borrow_mut();
 
             // Clone the info that will be stored in the new container
             container_geometry = tile_to_split.geometry.clone();
@@ -143,6 +142,7 @@ impl TilingState {
             Node::Leaf(Rc::clone(&tile_to_split)), // left
             Node::Leaf(Rc::clone(&new_tile)),      // right
             prev_sibiling.clone(), // sibiling is inherit from the sibilign side of the tile the split started from
+            tile_to_split.borrow().split.clone(),
         ))));
 
         // update tile and new tile
@@ -176,71 +176,187 @@ impl TilingState {
     /// given a wl surface the sibiling node will assume the geometry of the container
     /// the container will be eliminated and the upper container will point to the remaining Tile
     pub fn destroy(&mut self, wl_surface: &WlSurface) -> Result<Option<Node>, &'static str> {
-        /*
-                // TODO
+        // TODO
 
-                // get the tile to be destroyed
-                let tile_to_destroy = self
-                    .tile_info
-                    .get_mut(wl_surface)
-                    .expect("IMP having surface NOT present in tile_info map")
-                    .borrow();
+        // get the tile to be destroyed
+        let tile_to_destroy = self
+            .tile_info
+            .get_mut(wl_surface)
+            .expect("IMP having surface NOT present in tile_info map")
+            .borrow();
 
-                // Get the sibiling that should cover the all the destroyed space
-                //
-                // We have two cases now:
-                // + The sibilign is a Tile
-                // + The sibiling is a Structure
+        // Get the sibiling that should cover the all the destroyed space
+        //
+        // We have two cases now:
+        // + The sibilign is a Tile
+        // + The sibiling is a Structure
 
-                let container = match tile_to_destroy.container.as_ref() {
-                    // The container is a normal Structure
-                    Some(Node::Internal(c)) => c,
-                    // If the container is not present then
-                    // the tile is unique
-                    None => return Ok(None),
+        let container = match tile_to_destroy.container.as_ref() {
+            // The container is a normal Structure
+            Some(Node::Internal(c)) => c,
+            // If the container is not present then
+            // the tile is unique
+            None => return Ok(None),
+            // If the container is a tile
+            // then there is something wrong
+            Some(_) => panic!("WHAT!? the container CAN'T be a tile"),
+        };
 
-                    // If the container is a tile
-                    // then there is something wrong
-                    Some(_) => panic!("WHAT!? the container CAN'T be a tile"),
-                };
+        let sibiling_node = match tile_to_destroy.sibiling {
+            Sibiling::Left => Node::clone(&container.borrow().right),
+            Sibiling::Right => Node::clone(&container.borrow().left),
+            Sibiling::Unique => {
+                panic!("Unique tile should be already handled in the previous expression")
+            }
+        };
 
-                let sibiling_node = match tile_to_destroy.sibiling {
-                    Sibiling::Left => Node::clone(&container.borrow().right),
-                    Sibiling::Right => Node::clone(&container.borrow().left),
-                    Sibiling::Unique => {
-                        panic!("Unique tile should be already handled in the previous expression")
-                    }
-                };
+        // Two cases, the sibiling node is a Tile or a Structure
+        match Node::clone(&sibiling_node) {
+            Node::Leaf(tile) => {
+                let mut tile = tile.borrow_mut();
+                tile.geometry = container.borrow().geometry;
+                tile.container = container.borrow().container.clone();
 
-                // Two cases, the sibiling node is a Tile or a Structure
-                match sibiling_node {
-                    Node::Leaf(tile) => {
-                        let mut tile = tile.borrow_mut();
-                        tile.geometry = container.borrow().geometry;
-                        tile.container = container.borrow().container.clone();
-
-                        match tile.container.as_ref() {
-                            Some(Node::Internal(c)) => {
-                                let container_node = c.borrow();
-                                // the upper container will be the new container of the remaining tile
-                                let upper_container = match container_node.sibilig {
-                                    Sibiling::Right => Node::clone(&container_node.right),
-                                    Sibiling::Left => Node::clone(&container_node.left),
-                                    Sibiling::Unique => {
-                                        panic!("WHAT? the upper container unique should be already solved")
-                                    }
-                                };
+                match tile.container.as_ref() {
+                    // the upper container will be the new container of the remaining tile
+                    Some(Node::Internal(upper_container)) => {
+                        // place the tile where the container was in the upper container
+                        match container.borrow().sibiling {
+                            Sibiling::Right => {
+                                upper_container.borrow_mut().right = Node::clone(&sibiling_node)
                             }
-                            Some(Node::Leaf(_)) => {
-                                panic!("someting broken");
+                            Sibiling::Left => {
+                                upper_container.borrow_mut().left = Node::clone(&sibiling_node)
                             }
-                            None => (),
+                            Sibiling::Unique => {
+                                panic!("WHAT? the upper container can't be Sibiling::unique (or am I wrong?)")
+                            }
                         }
                     }
-                    Node::Internal(structure) => todo!("structure sibiling to be implemented"),
+                    Some(Node::Leaf(_)) => {
+                        panic!("someting broken")
+                    }
+                    // If the sibiling of a container is Unique then it must be the first
+                    // node of the tree
+                    // Do nothing here
+                    None => (),
+                };
+
+                Ok(Some(sibiling_node))
+            }
+            Node::Internal(structure) => {
+                let left_node = Node::clone(&structure.borrow().left);
+                let right_node = Node::clone(&structure.borrow().right);
+
+                let upper_container = match container.borrow().container.as_ref() {
+                    Some(c) => Node::clone(c),
+                    // if the upper container is none then the first container is the head
+                    // and should be used as main container being the meximum size
+                    None => {
+                        println!("out structure geom: {:?}", container.borrow().geometry);
+                        println!("inner structure geom: {:?}", structure.borrow().geometry);
+                        structure.borrow_mut().geometry = container.borrow().geometry;
+                        let new_head = Node::Internal(Rc::clone(&structure));
+                        self.tile_tree_head = Some(Node::clone(&new_head));
+                        println!("new structure geom: {:?}", structure.borrow().geometry);
+                        new_head
+                    }
+                };
+
+                // change the container of left and right node
+                let change_container = |node: Node, new_container: Node| match node {
+                    Node::Leaf(leaf) => leaf.borrow_mut().container = Some(new_container),
+                    Node::Internal(structure) => {
+                        structure.borrow_mut().container = Some(new_container)
+                    }
+                };
+                change_container(Node::clone(&left_node), Node::clone(&upper_container));
+                change_container(Node::clone(&right_node), Node::clone(&upper_container));
+
+                // this should always be true
+                if let Node::Internal(c) = Node::clone(&upper_container) {
+                    c.borrow_mut().left = left_node;
+                    c.borrow_mut().right = right_node;
                 }
-        */
-        todo!()
+
+                Self::update_geometry_node(&upper_container, None);
+                Ok(Some(Node::clone(&upper_container)))
+            }
+        }
+    }
+
+    /// This function will accept a Node and update all the subtree geometry with the new
+    /// geometry specified, nothing will be changed except the field geometry
+    ///
+    /// if None then every node in the subtree will be reevaluated with the current geometry
+    /// in the passed node
+    pub fn update_geometry_node(node: &Node, new_geometry: Option<Rectangle<i32, Logical>>) {
+        match node {
+            Node::Internal(structure) => {
+                let structure = structure.borrow();
+
+                let left_node = Node::clone(&structure.left);
+                let right_node = Node::clone(&structure.right);
+
+                let get_geometry = |node: &Node| match node {
+                    Node::Internal(s) => s.borrow().geometry,
+                    Node::Leaf(t) => t.borrow().geometry,
+                };
+
+                let change_geometry =
+                    |node: &Node, new_geom: Rectangle<i32, Logical>| match Node::clone(node) {
+                        Node::Internal(s) => {
+                            s.borrow_mut().geometry = new_geom;
+                        }
+                        Node::Leaf(t) => {
+                            t.borrow_mut().geometry = new_geom;
+                        }
+                    };
+
+                match structure.split {
+                    Split::Horizontal => {
+                        // update tile_to_split
+                        dbg!(structure.geometry);
+                        let new_width = (structure.geometry.size.w as f32 / 2.0).floor() as i32;
+                        let mut left_geom = structure.geometry;
+                        dbg!(left_geom);
+                        left_geom.size.w = new_width;
+                        dbg!(left_geom);
+                        change_geometry(&left_node, left_geom);
+
+                        // create new tile
+                        let right_geom = Rectangle::from_loc_and_size(
+                            (left_geom.loc.x + new_width, left_geom.loc.y),
+                            left_geom.size,
+                        );
+                        dbg!(right_geom);
+                        change_geometry(&right_node, right_geom);
+                    }
+                    Split::Vertical => {
+                        let new_height = (structure.geometry.size.h as f32 / 2.0).floor() as i32;
+                        let mut left_geom = structure.geometry;
+                        left_geom.size.h = new_height;
+                        change_geometry(&left_node, left_geom);
+
+                        // create new tile
+                        let right_geom = Rectangle::from_loc_and_size(
+                            (left_geom.loc.x, left_geom.loc.y + new_height),
+                            left_geom.size,
+                        );
+                        change_geometry(&right_node, right_geom);
+                    }
+                }
+
+                // recursive if left or right sons are Strucutre
+                let rec = |node: &Node| match node {
+                    Node::Internal(_) => Self::update_geometry_node(node, None),
+                    _ => (),
+                };
+                rec(&left_node);
+                rec(&right_node);
+            }
+            Node::Leaf(_) => panic!("you stupid?"),
+        }
     }
 
     /// This function should update the space
@@ -305,6 +421,7 @@ pub struct Structure {
     left: Node,
     right: Node,
     sibiling: Sibiling,
+    split: Split,
 }
 
 impl Structure {
@@ -314,6 +431,7 @@ impl Structure {
         left: Node,
         right: Node,
         sibiling: Sibiling,
+        split: Split,
     ) -> Self {
         Structure {
             geometry,
@@ -321,6 +439,7 @@ impl Structure {
             left,
             right,
             sibiling,
+            split,
         }
     }
 }

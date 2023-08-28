@@ -220,9 +220,12 @@ impl XdgShellHandler for AIGIState {
     fn grab(&mut self, _surface: PopupSurface, _seat: wl_seat::WlSeat, _serial: Serial) {}
 
     fn toplevel_destroyed(&mut self, surface: ToplevelSurface) {
-        //let node_to_update = self.tiling_state.destroy(surface.wl_surface()).unwrap();
-        //self.tiling_state
-        //.update_space(node_to_update, &mut self.space);
+        match self.tiling_state.destroy(surface.wl_surface()).unwrap() {
+            Some(node_to_update) => self
+                .tiling_state
+                .update_space(node_to_update, &mut self.space),
+            None => todo!("Screen should be empty now"),
+        }
     }
 }
 delegate_xdg_shell!(AIGIState);
