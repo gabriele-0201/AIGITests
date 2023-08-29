@@ -233,7 +233,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                                                 //state.tiling_info.get_mut(&wl_surface).expect("Impossible havinfg a window not present in tiling info").split = new_split;
                                                 state
                                                     .tiling_state
-                                                    .change_split(&wl_surface, new_split);
+                                                    .set_split(&wl_surface, new_split);
                                             }
                                             None => (),
                                         }

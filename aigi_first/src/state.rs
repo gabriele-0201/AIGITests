@@ -202,6 +202,13 @@ impl XdgShellHandler for AIGIState {
 
         self.tiling_state
             .update_space(node_to_update, &mut self.space);
+
+        println!(
+            "Status Tile Tree: \n {:?}",
+            self.tiling_state.tile_tree_head
+        );
+
+        println!("MAP SIZE: \n {:?}", self.tiling_state.tile_info.len());
     }
 
     fn new_popup(&mut self, _: PopupSurface, _: PositionerState) {}
@@ -220,12 +227,27 @@ impl XdgShellHandler for AIGIState {
     fn grab(&mut self, _surface: PopupSurface, _seat: wl_seat::WlSeat, _serial: Serial) {}
 
     fn toplevel_destroyed(&mut self, surface: ToplevelSurface) {
-        match self.tiling_state.destroy(surface.wl_surface()).unwrap() {
-            Some(node_to_update) => self
-                .tiling_state
-                .update_space(node_to_update, &mut self.space),
-            None => todo!("Screen should be empty now"),
+        // TODO: find a way to remove this clone
+        let window = self
+            .space
+            .elements()
+            .find(|w| *w.toplevel() == surface)
+            .expect("IMP destroy a non existring surface")
+            .clone();
+        self.space.unmap_elem(&window);
+
+        if let Some(node_to_update) = self.tiling_state.destroy(surface.wl_surface()).unwrap() {
+            println!("TO UPDATE: {node_to_update:?} ");
+            self.tiling_state
+                .update_space(node_to_update, &mut self.space);
         }
+
+        println!(
+            "Status Tile Tree: \n {:?}",
+            self.tiling_state.tile_tree_head
+        );
+
+        println!("MAP SIZE: \n {:?}", self.tiling_state.tile_info.len());
     }
 }
 delegate_xdg_shell!(AIGIState);
