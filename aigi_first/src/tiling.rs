@@ -83,21 +83,15 @@ impl TilingState {
             right: Node::Tile(Rc::clone(&new_tile)),
         }));
 
-        // The upper container must poit to the new struct
-        if let Some(upper_container) = structure.borrow().container.as_ref() {
-            match structure.borrow().side {
-                Side::Left => {
-                    upper_container.borrow_mut().left = Node::Structure(Rc::clone(&structure))
-                }
-                Side::Right => {
-                    upper_container.borrow_mut().right = Node::Structure(Rc::clone(&structure))
-                }
-                Side::Unique => panic!("Impossible to have a container with Side::Unique"),
-            }
-        } else {
+        match structure.borrow().container.as_ref() {
+            // The upper container must poit to the new struct
+            Some(upper_container) => upper_container.borrow_mut().set_side(
+                structure.borrow().side,
+                &Node::Structure(Rc::clone(&structure)),
+            ),
             // update head of the tree
-            self.tile_tree_head = Some(Node::Structure(Rc::clone(&structure)));
-        };
+            None => self.tile_tree_head = Some(Node::Structure(Rc::clone(&structure))),
+        }
 
         // Update tiles
         {
@@ -130,6 +124,8 @@ impl TilingState {
             .remove(wl_surface)
             .expect("IMP having surface NOT present in tile_info map");
 
+        println!("TILE TO BE DESTROYED: {:?}", tile_to_destroy);
+
         // Get the sibiling that should cover the all the destroyed space
         let container = match tile_to_destroy.borrow().container.as_ref() {
             // The container is a normal Structure
@@ -137,10 +133,9 @@ impl TilingState {
             // If the container is not present then
             // the tile is unique, just needed to  remove the head of the Tree
             None => {
-                return {
-                    self.tile_tree_head = None;
-                    Ok(None)
-                }
+                println!("REMOVE LAST TILE");
+                self.tile_tree_head = None;
+                return Ok(None);
             }
         };
         let mut sibiling = Node::get_sibiling(&container.borrow(), tile_to_destroy.borrow().side);
@@ -154,6 +149,7 @@ impl TilingState {
         sibiling.set_geometry(container.borrow().geometry);
         // Update the container of the tile
         sibiling.set_container(upper_container.clone());
+        sibiling.set_side(container.borrow().side);
 
         match upper_container.as_ref() {
             // the upper container will be the new container of the remaining tile
@@ -293,6 +289,13 @@ impl Node {
         }
     }
 
+    fn set_side(&mut self, new_side: Side) {
+        match self {
+            Node::Structure(s) => s.borrow_mut().side = new_side,
+            Node::Tile(t) => t.borrow_mut().side = new_side,
+        }
+    }
+
     fn get_sibiling(container: &Structure, side: Side) -> Node {
         match side {
             Side::Left => container.right.clone(),
@@ -365,6 +368,11 @@ pub struct Tile {
 
 impl std::fmt::Debug for Tile {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "Tile: geometry: {:?}", self.geometry)
+        write!(
+            f,
+            "Tile: geometry: {:?}, container_is_none: {}",
+            self.geometry,
+            self.container.is_none()
+        )
     }
 }
