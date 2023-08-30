@@ -1,7 +1,9 @@
-use std::time::Duration;
+use std::{os::fd::FromRawFd, time::Duration};
 
 use smithay::{
     backend::{
+        drm::{DrmDeviceFd, DrmNode},
+        input::InputEvent,
         libinput::{LibinputInputBackend, LibinputSessionInterface},
         session::{libseat::LibSeatSession, Session},
         udev::UdevBackend,
@@ -9,8 +11,10 @@ use smithay::{
     reexports::{
         calloop::{timer::Timer, EventLoop},
         input::Libinput,
+        nix::fcntl::OFlag,
         wayland_server::Display,
     },
+    utils::DeviceFd,
 };
 
 struct State {}
@@ -21,7 +25,7 @@ fn main() {
     /*
      * Initialize session
      */
-    let (session, notifier) = LibSeatSession::new().unwrap();
+    let (mut session, notifier) = LibSeatSession::new().unwrap();
 
     // Not sure why this is needed
     event_loop
@@ -38,12 +42,46 @@ fn main() {
 
     for (device_id, path) in udev_backend.device_list() {
         println!("device found by udev: {device_id:?}, {path:?}");
+
+        if let Ok(node) = DrmNode::from_dev_id(device_id) {
+            // Get the Raw File Descriptor of the Device
+            // (if should be the bridge with the file in the /dev folder?)
+            let fd = session
+                .open(
+                    &path,
+                    OFlag::O_RDWR | OFlag::O_CLOEXEC | OFlag::O_NOCTTY | OFlag::O_NONBLOCK,
+                )
+                .unwrap();
+
+            //
+            let fd = DrmDeviceFd::new(unsafe { DeviceFd::from_raw_fd(fd) });
+
+            println!("fd of device: {fd:?}");
+
+            // let (drm, drm_notifier) = drm::DrmDevice::new(fd, false).unwrap();
+        }
     }
 
     event_loop
         .handle()
         .insert_source(udev_backend, |event, _, _state| {
             println!("new udevEvent: {event:?}");
+        })
+        .unwrap();
+
+    /*
+     * Initialize libinput backend
+     */
+    let mut libinput_context =
+        Libinput::new_with_udev::<LibinputSessionInterface<LibSeatSession>>(session.clone().into());
+    libinput_context.udev_assign_seat(&session.seat()).unwrap();
+    let libinput_backend = LibinputInputBackend::new(libinput_context.clone());
+
+    event_loop
+        .handle()
+        .insert_source(libinput_backend, move |event, _, _data| match event {
+            InputEvent::Keyboard { event } => {}
+            _ => println!("Other libinput event: {event:?}"),
         })
         .unwrap();
 
