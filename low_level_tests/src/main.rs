@@ -3,7 +3,7 @@ use std::{os::fd::FromRawFd, time::Duration};
 use smithay::{
     backend::{
         drm::{DrmDeviceFd, DrmNode},
-        input::InputEvent,
+        input::{InputEvent, KeyboardKeyEvent},
         libinput::{LibinputInputBackend, LibinputSessionInterface},
         session::{libseat::LibSeatSession, Session},
         udev::UdevBackend,
@@ -80,7 +80,23 @@ fn main() {
     event_loop
         .handle()
         .insert_source(libinput_backend, move |event, _, _data| match event {
-            InputEvent::Keyboard { event } => {}
+            InputEvent::Keyboard { event } => {
+                let keycode = event.key_code();
+                let state = event.state();
+                println!("keycode: {keycode}, state {state:?}");
+            }
+            InputEvent::PointerMotion { event, .. } => {
+                println!("Pointer Motion: {event:?}");
+            }
+            InputEvent::PointerMotionAbsolute { event, .. } => {
+                println!("Pointer Motion Absolute: {event:?}");
+            }
+            InputEvent::PointerButton { event, .. } => {
+                println!("Pointer Butto: {event:?}");
+            }
+            InputEvent::PointerAxis { event, .. } => {
+                println!("Pointer Axis: {event:?}");
+            }
             _ => println!("Other libinput event: {event:?}"),
         })
         .unwrap();
