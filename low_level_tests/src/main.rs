@@ -3,7 +3,7 @@ use std::{os::fd::FromRawFd, time::Duration};
 use smithay::{
     backend::{
         drm::{DrmDeviceFd, DrmNode},
-        input::{InputEvent, KeyboardKeyEvent},
+        input::{InputEvent, KeyboardKeyEvent, PointerMotionEvent},
         libinput::{LibinputInputBackend, LibinputSessionInterface},
         session::{libseat::LibSeatSession, Session},
         udev::UdevBackend,
@@ -12,9 +12,8 @@ use smithay::{
         calloop::{timer::Timer, EventLoop},
         input::Libinput,
         nix::fcntl::OFlag,
-        wayland_server::Display,
     },
-    utils::DeviceFd,
+    utils::{DeviceFd, Logical, Point},
 };
 
 struct State {}
@@ -43,7 +42,7 @@ fn main() {
     for (device_id, path) in udev_backend.device_list() {
         println!("device found by udev: {device_id:?}, {path:?}");
 
-        if let Ok(node) = DrmNode::from_dev_id(device_id) {
+        if let Ok(_node) = DrmNode::from_dev_id(device_id) {
             // Get the Raw File Descriptor of the Device
             // (if should be the bridge with the file in the /dev folder?)
             let fd = session
@@ -77,6 +76,9 @@ fn main() {
     libinput_context.udev_assign_seat(&session.seat()).unwrap();
     let libinput_backend = LibinputInputBackend::new(libinput_context.clone());
 
+    // first location ALSO in smithay is (0,0)
+    let mut pointer_location: Point<f64, Logical> = (0.0, 0.0).into();
+
     event_loop
         .handle()
         .insert_source(libinput_backend, move |event, _, _data| match event {
@@ -86,7 +88,8 @@ fn main() {
                 println!("keycode: {keycode}, state {state:?}");
             }
             InputEvent::PointerMotion { event, .. } => {
-                println!("Pointer Motion: {event:?}");
+                pointer_location += event.delta();
+                println!("Pointer location: {pointer_location:?}");
             }
             InputEvent::PointerMotionAbsolute { event, .. } => {
                 println!("Pointer Motion Absolute: {event:?}");

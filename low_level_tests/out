@@ -1,0 +1,27 @@
+device found by udev: 57857, "/dev/dri/card1"
+fd of device: DrmDeviceFd(InternalDrmDeviceFd { fd: DeviceFd(OwnedFd { fd: 9 }), privileged: false })
+Other libinput event: DeviceAdded { device: Device @0x556f345d7bf0 }
+Other libinput event: DeviceAdded { device: Device @0x556f345dda30 }
+Other libinput event: DeviceAdded { device: Device @0x556f345fed70 }
+Other libinput event: DeviceAdded { device: Device @0x556f34604a80 }
+Other libinput event: DeviceAdded { device: Device @0x556f3460cc50 }
+Other libinput event: DeviceAdded { device: Device @0x556f34621e60 }
+Other libinput event: DeviceAdded { device: Device @0x556f3462d2f0 }
+Other libinput event: DeviceAdded { device: Device @0x556f34633b90 }
+Other libinput event: DeviceAdded { device: Device @0x556f3463c1a0 }
+Pointer location: Point<Logical> { x: 7.542566709021601, y: 6.335756035578146 }
+Pointer location: Point<Logical> { x: 16.29271058696865, y: 14.735894158407312 }
+Pointer location: Point<Logical> { x: 25.165376545164875, y: 23.994328201742505 }
+Pointer location: Point<Logical> { x: 31.074508300529025, y: 30.25105594271631 }
+Pointer location: Point<Logical> { x: 35.48690982530666, y: 34.32404196558797 }
+Pointer location: Point<Logical> { x: 38.54164934246041, y: 37.37878148274172 }
+Pointer location: Point<Logical> { x: 40.917557855802215, y: 39.41527449417755 }
+Pointer location: Point<Logical> { x: 42.61463536533208, y: 40.77293650180144 }
+Pointer location: Point<Logical> { x: 43.632881871049996, y: 41.79118300751936 }
+Pointer location: Point<Logical> { x: 44.31171287486194, y: 42.4700140113313 }
+Pointer location: Point<Logical> { x: 44.99054387867388, y: 43.148845015143245 }
+Pointer location: Point<Logical> { x: 45.32995938057986, y: 43.48826051704922 }
+Pointer location: Point<Logical> { x: 45.65055717707298, y: 43.48826051704922 }
+Pointer location: Point<Logical> { x: 45.65055717707298, y: 43.77802865627933 }
+Pointer location: Point<Logical> { x: 45.65055717707298, y: 43.997328403373494 }
+Pointer location: Point<Logical> { x: 45.65055717707298, y: 44.14533474507858 }
