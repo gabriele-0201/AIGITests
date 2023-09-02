@@ -10,17 +10,18 @@ use smithay::{
             multigpu::{gbm::GbmGlesBackend, GpuManager},
         },
         session::{libseat::LibSeatSession, Session},
-        udev::{primary_gpu, UdevBackend},
+        udev::{self, UdevBackend},
     },
     reexports::{
         calloop::{timer::Timer, EventLoop, RegistrationToken},
-        drm::control::crtc,
+        drm::control::{crtc, Device, ModeTypeFlags},
         input::Libinput,
         nix::fcntl::OFlag,
     },
     utils::{DeviceFd, Logical, Point},
     wayland::compositor::SurfaceData,
 };
+use smithay_drm_extras::drm_scanner::{DrmScanEvent, DrmScanner};
 use std::{collections::HashMap, os::fd::FromRawFd, time::Duration};
 
 struct State {}
@@ -86,111 +87,126 @@ fn main() {
 
     /*
      * Initialize the Compositor (primary gpu)
+     * Firstly get the path of the primary gpu
      */
 
-    let primary_gpu = primary_gpu(&session.seat())
+    let (primary_gpu_path, primary_gpu) = udev::primary_gpu(&session.seat())
         .unwrap()
         .and_then(|x| {
-            DrmNode::from_path(x)
-                .ok()?
-                .node_with_type(NodeType::Render)?
-                .ok()
+            Some((
+                x.clone(),
+                DrmNode::from_path(x)
+                    .ok()?
+                    .node_with_type(NodeType::Render)?
+                    .ok()
+                    .expect("IMP find gpu"),
+            ))
         })
         .expect("IMP find gpu");
+
     /*
      * Initialize the udev backend
      */
     let udev_backend = UdevBackend::new(&session.seat()).unwrap();
 
-    let gpus: GpuManager<GbmGlesBackend<GlesRenderer>> =
-        GpuManager::new(GbmGlesBackend::default()).unwrap();
-    let backends: HashMap<DrmNode, BackendData> = HashMap::new();
-
     for (device_id, path) in udev_backend.device_list() {
-        println!("device found by udev: {device_id:?}, {path:?}");
+        if path == primary_gpu_path {
+            println!("primary gpu founded by udev: {device_id:?}, {path:?}");
+            continue;
+        }
+
+        println!("device founded by udev,: {device_id:?}, {path:?}");
 
         match DrmNode::from_dev_id(device_id) {
-            Ok(node) => {
-                // Get the Raw File Descriptor of the Device
-                // (if should be the bridge with the file in the /dev folder?)
-                let fd = session
-                    .open(
-                        &path,
-                        OFlag::O_RDWR | OFlag::O_CLOEXEC | OFlag::O_NOCTTY | OFlag::O_NONBLOCK,
-                    )
-                    .unwrap();
-
-                let fd = DrmDeviceFd::new(unsafe { DeviceFd::from_raw_fd(fd) });
-
-                println!("fd of device: {fd:?}");
-
-                let (drm, notifier) =
-                    DrmDevice::new(fd.clone(), true).expect("IMP create DrmDevice");
-
-                let gbm = GbmDevice::new(fd).expect("IMP create Gbm Device");
-
-                let registration_token = event_loop
-                    .handle()
-                    .insert_source(notifier, move |event, metadata, data| match event {
-                        DrmEvent::VBlank(crtc) => {
-                            println!("VBlank event, crtc: {crtc:?}, metadata: {metadata:?}")
-                            // data.state.frame_finish(node, crtc, metadata);
-                        }
-                        DrmEvent::Error(error) => {
-                            println!("error: {error:?}")
-                            // error!("{:?}", error);
-                        }
-                    })
-                    .unwrap();
-
-                let render_node =
-                    EGLDevice::device_for_display(&EGLDisplay::new(gbm.clone()).unwrap())
-                        .ok()
-                        .and_then(|x| x.try_get_render_node().ok().flatten())
-                        .unwrap_or(node);
-
-                self.backend_data
-                    .gpus
-                    .as_mut()
-                    .add_node(render_node, gbm.clone())
-                    .map_err(DeviceAddError::AddNode)?;
-
-                let backend_data = BackendData {
-                    registration_token,
-                    gbm,
-                    drm,
-                    drm_scanner: DrmScanner::new(),
-                    render_node,
-                    surfaces: HashMap::new(),
-                };
-                backends.insert(node, backend_data.clone());
-
-                for event in backend_data.drm_scanner.scan_connectors(&device.drm) {
-                    match event {
-                        DrmScanEvent::Connected {
-                            connector,
-                            crtc: Some(crtc),
-                        } => {
-                            //self.connector_connected(node, connector, crtc);
-                            println!("Connected: crtc-{crtc:?} connector-{connector:?}");
-                        }
-                        DrmScanEvent::Disconnected {
-                            connector,
-                            crtc: Some(crtc),
-                        } => {
-                            //self.connector_disconnected(node, connector, crtc);
-                            println!("Disconnected: crtc-{crtc:?} connector-{connector:?}");
-                        }
-                        _ => {}
-                    }
-                }
-            }
+            Ok(node) => {}
             Err(err) => {
                 println!("Impossible get DrmNode from device {device_id:?}, err: {err}");
             }
         }
     }
 
+    // Open the file descriptor
+    let fd = session
+        .open(&primary_gpu_path, OFlag::empty())
+        .expect("IMP open primary gpu");
+    // Wrap the file descriptor into a smithay file
+    let fd = DrmDeviceFd::new(unsafe { DeviceFd::from_raw_fd(fd) });
+    // Now we can initialize the drm device
+    let (drm, event_source) = DrmDevice::new(fd, false).unwrap();
+    // Add to the event loop the drm'events
+    event_loop
+        .handle()
+        .insert_source(event_source, |event, _, state| {
+            // You will get DrmEvent::VBlank events here,
+            // VBlank means that the rendering of given output has compleated and output is ready for a next frame.
+            match event {
+                DrmEvent::VBlank(_handle) => (),
+                DrmEvent::Error(_error) => (),
+            }
+        });
+
+    let mut drm_scanner: DrmScanner = DrmScanner::default();
+    // The following should be called every time Udev::Changed event is fired,
+    // to make sure all newly connected outputs are initialized,
+    let scan_results = drm_scanner.scan_connectors(&drm);
+    for event in scan_results {
+        match event {
+            DrmScanEvent::Connected {
+                connector,
+                crtc: Some(crtc),
+            } => {
+                // Monitors have diferent modes that can be selected, eg. 1080x1920@90hz
+                // let's choose the preferred one
+                let mode_id = connector
+                    .modes()
+                    .iter()
+                    .position(|mode| mode.mode_type().contains(ModeTypeFlags::PREFERRED))
+                    .unwrap_or(0);
+
+                let drm_mode = connector.modes()[mode_id];
+                // let drm_surface = drm.create_surface(crtc, drm_mode, &[connector.handle()]).unwrap();
+                // Now we have a surface that can be used to render stuff (usually using GBM)
+
+                // let fmt = smithay::backend::drm::buffer::DrmFourcc::Xrgb8888;
+                let fmt = smithay::backend::allocator::Fourcc::Xrgb8888;
+                let mut db = drm
+                    .create_dumb_buffer(
+                        (drm_mode.size().0.into(), drm_mode.size().1.into()),
+                        fmt,
+                        32,
+                    )
+                    .expect("Could not create dumb buffer");
+
+                {
+                    let mut map = drm
+                        .map_dumb_buffer(&mut db)
+                        .expect("Could not map dumbbuffer");
+                    for b in map.as_mut().chunks_exact_mut(4) {
+                        // XRGB = XXXX XXXX RRRR RRRR GGGG GGGG BBBB BBBB
+                        b[0] = 0;
+                        b[1] = 0xff;
+                        b[2] = 0;
+                        b[3] = 0;
+                    }
+                }
+                let fb = drm
+                    .add_framebuffer(&db, 24, 32)
+                    .expect("Could not create FB");
+
+                drm.set_crtc(
+                    crtc,
+                    Some(fb),
+                    (0, 0),
+                    &[connector.handle()],
+                    Some(drm_mode),
+                )
+                .expect("Could not set CRTC");
+            }
+            _ => {}
+        }
+    }
+
+    // Insert in the Loop Udev Events callback
     event_loop
         .handle()
         .insert_source(udev_backend, |event, _, _state| {
@@ -198,6 +214,7 @@ fn main() {
         })
         .unwrap();
 
+    // Insert timer in the loop
     event_loop
         .handle()
         .insert_source(Timer::from_duration(Duration::from_secs(5)), |_, _, _| {
@@ -205,6 +222,7 @@ fn main() {
         })
         .unwrap();
 
+    // Start the loop
     event_loop
         .run(None, &mut State {}, |_| {})
         .expect("problem with event loop");

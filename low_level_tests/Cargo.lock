@@ -259,6 +259,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "edid-rs"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2ab5fa33485cd85ac354df485819a63360fefa312fe04cffe65e6f175be1522c"
+
+[[package]]
 name = "encoding"
 version = "0.2.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -627,6 +633,7 @@ name = "lol_level_tests"
 version = "0.1.0"
 dependencies = [
  "smithay",
+ "smithay-drm-extras",
 ]
 
 [[package]]
@@ -1044,7 +1051,7 @@ checksum = "62bb4feee49fdd9f707ef802e22365a35de4b7b299de4763d44bfea899442ff9"
 [[package]]
 name = "smithay"
 version = "0.3.0"
-source = "git+https://github.com/Smithay/smithay#04dea95a3202329ee4acb2ade5c9bfc47137846c"
+source = "git+https://github.com/Smithay/smithay#5f1674cc825881f88d9ad6d684cc4f58e344be40"
 dependencies = [
  "appendlist",
  "ash",
@@ -1103,6 +1110,15 @@ dependencies = [
  "wayland-client",
  "wayland-cursor",
  "wayland-protocols 0.29.5",
+]
+
+[[package]]
+name = "smithay-drm-extras"
+version = "0.1.0"
+source = "git+https://github.com/Smithay/smithay#5f1674cc825881f88d9ad6d684cc4f58e344be40"
+dependencies = [
+ "drm",
+ "edid-rs",
 ]
 
 [[package]]
