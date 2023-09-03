@@ -1,13 +1,17 @@
 use smithay::{
     backend::{
-        allocator::gbm::GbmDevice,
-        drm::{DrmDevice, DrmDeviceFd, DrmEvent, DrmNode, NodeType},
+        allocator::{
+            gbm::{GbmAllocator, GbmBufferFlags, GbmDevice},
+            Fourcc,
+        },
+        drm::{DrmDevice, DrmDeviceFd, DrmEvent, DrmNode, GbmBufferedSurface, NodeType},
         egl::{EGLDevice, EGLDisplay},
         input::{InputEvent, KeyboardKeyEvent, PointerMotionEvent},
         libinput::{LibinputInputBackend, LibinputSessionInterface},
         renderer::{
             gles::GlesRenderer,
             multigpu::{gbm::GbmGlesBackend, GpuManager},
+            Bind, Frame, Renderer,
         },
         session::{libseat::LibSeatSession, Session},
         udev::{self, UdevBackend},
@@ -18,7 +22,7 @@ use smithay::{
         input::Libinput,
         nix::fcntl::OFlag,
     },
-    utils::{DeviceFd, Logical, Point},
+    utils::{DeviceFd, Logical, Point, Rectangle, Transform},
     wayland::compositor::SurfaceData,
 };
 use smithay_drm_extras::drm_scanner::{DrmScanEvent, DrmScanner};
@@ -90,18 +94,8 @@ fn main() {
      * Firstly get the path of the primary gpu
      */
 
-    let (primary_gpu_path, primary_gpu) = udev::primary_gpu(&session.seat())
-        .unwrap()
-        .and_then(|x| {
-            Some((
-                x.clone(),
-                DrmNode::from_path(x)
-                    .ok()?
-                    .node_with_type(NodeType::Render)?
-                    .ok()
-                    .expect("IMP find gpu"),
-            ))
-        })
+    let primary_gpu_path = udev::primary_gpu(&session.seat())
+        .expect("IMP find gpu")
         .expect("IMP find gpu");
 
     /*
@@ -117,12 +111,14 @@ fn main() {
 
         println!("device founded by udev,: {device_id:?}, {path:?}");
 
+        /*
         match DrmNode::from_dev_id(device_id) {
             Ok(node) => {}
             Err(err) => {
                 println!("Impossible get DrmNode from device {device_id:?}, err: {err}");
             }
         }
+        */
     }
 
     // Open the file descriptor
@@ -164,10 +160,8 @@ fn main() {
                     .unwrap_or(0);
 
                 let drm_mode = connector.modes()[mode_id];
-                // let drm_surface = drm.create_surface(crtc, drm_mode, &[connector.handle()]).unwrap();
-                // Now we have a surface that can be used to render stuff (usually using GBM)
 
-                // let fmt = smithay::backend::drm::buffer::DrmFourcc::Xrgb8888;
+                /* Allocate a dumb buffer and draw a solid color in it
                 let fmt = smithay::backend::allocator::Fourcc::Xrgb8888;
                 let mut db = drm
                     .create_dumb_buffer(
@@ -201,6 +195,82 @@ fn main() {
                     Some(drm_mode),
                 )
                 .expect("Could not set CRTC");
+                */
+
+                let drm_surface = drm
+                    .create_surface(crtc, drm_mode, &[connector.handle()])
+                    .unwrap();
+                // Now we have a surface that can be used to render stuff (usually using GBM)
+
+                // Creation of the gbm device and the GbmAllocator
+                let gbm = GbmDevice::new(drm.device_fd().clone()).unwrap();
+                let gbm_allocator = GbmAllocator::new(
+                    gbm.clone(),
+                    GbmBufferFlags::RENDERING | GbmBufferFlags::SCANOUT,
+                );
+
+                // We also want to aquire the node of a device that will be doing the rendering
+                // (On typical desktop it will probably equal the node that DrmDevice was created from,
+                // but on some ARM setups this is splited into two separate nodes,
+                // one for gpu acceleration and one for handling outputs)
+                let render_node =
+                    EGLDevice::device_for_display(&EGLDisplay::new(gbm.clone()).unwrap())
+                        .unwrap()
+                        .try_get_render_node()
+                        .expect("IMP create render node")
+                        .expect("IMP create render node");
+
+                let mut gpu_manager: GpuManager<GbmGlesBackend<GlesRenderer>> =
+                    GpuManager::new(Default::default()).expect("IMP create gpu manager");
+                gpu_manager
+                    .as_mut()
+                    .add_node(render_node, gbm.clone())
+                    .expect("IMP add render_node to gpu manager");
+
+                let mut renderer = gpu_manager
+                    .single_renderer(&render_node)
+                    .expect("IMP extract renderer");
+
+                // Creation of the gbm surface
+                let mut gbm_surface = GbmBufferedSurface::new(
+                    drm_surface,
+                    gbm_allocator,
+                    //&[Fourcc::Abgr8888, Fourcc::Argb8888],
+                    &[Fourcc::Xrgb8888],
+                    renderer
+                        .as_mut()
+                        .egl_context()
+                        .dmabuf_render_formats()
+                        .clone(),
+                )
+                .expect("IMP creating gbm surface");
+
+                // Render first frame:
+                let (dmabuf, _age) = gbm_surface
+                    .next_buffer()
+                    .expect("IMP get next buffer to create the frame");
+                // After this call our OpenGl render will render to this buffer
+                renderer.bind(dmabuf).unwrap();
+
+                let output_size = (drm_mode.size().0 as i32, drm_mode.size().1 as i32);
+                let mut frame = renderer
+                    .render(output_size.into(), Transform::Normal)
+                    .expect("IMP get frame");
+                // Draw a solid color to the current target at the specified destination with the specified color.
+
+                let destination = Rectangle::from_loc_and_size((0, 0), output_size);
+                frame
+                    .draw_solid(destination, &[], [0.0, 1.0, 1.0, 1.0])
+                    .unwrap();
+
+                // Frame is done let's submit it
+                gbm_surface
+                    .queue_buffer(None, Some(vec![]), ())
+                    .expect("IMP submit frame");
+
+                gbm_surface.frame_submitted().unwrap();
+
+                // After this you will get VBlank event, in response to it you can render next frame
             }
             _ => {}
         }
