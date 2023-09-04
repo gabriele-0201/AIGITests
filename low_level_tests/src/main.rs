@@ -234,30 +234,14 @@ fn main() {
             )
             .expect("IMP creating gbm surface");
 
-            // Render first frame:
-            let (dmabuf, _age) = gbm_surface
-                .next_buffer()
-                .expect("IMP get next buffer to create the frame");
-            // After this call our OpenGl render will render to this buffer
-            renderer.bind(dmabuf).unwrap();
-
             let output_size = (drm_mode.size().0 as i32, drm_mode.size().1 as i32);
-            let mut frame = renderer
-                .render(output_size.into(), Transform::Normal)
-                .expect("IMP get frame");
-            // Draw a solid color to the current target at the specified destination with the specified color.
 
-            let destination = Rectangle::from_loc_and_size((0, 0), output_size);
-            frame
-                .draw_solid(destination, &[], [0.0, 1.0, 1.0, 1.0])
-                .unwrap();
-
-            // Frame is done let's submit it
-            gbm_surface
-                .queue_buffer(None, Some(vec![]), ())
-                .expect("IMP submit frame");
-
-            gbm_surface.frame_submitted().unwrap();
+            draw_frame(
+                &mut gbm_surface,
+                &mut gpu_manager,
+                &render_node,
+                output_size,
+            );
 
             // After this you will get VBlank event, in response to it you can render next frame
             (gbm_surface, output_size)
@@ -272,42 +256,14 @@ fn main() {
             // You will get DrmEvent::VBlank events here,
             // VBlank means that the rendering of given output has compleated and output is ready for a next frame.
             match event {
-                DrmEvent::VBlank(handle) => {
-                    println!("UPDATE");
-
-                    // Render first frame:
-                    let (dmabuf, _age) = state
-                        .output_device
-                        .gbm_surface
-                        .next_buffer()
-                        .expect("IMP get next buffer to create the frame");
-                    // After this call our OpenGl render will render to this buffer
-                    let mut renderer = state
-                        .gpu_manager
-                        .single_renderer(&state.render_node)
-                        .unwrap();
-
-                    renderer.bind(dmabuf).unwrap();
-
-                    let mut frame = renderer
-                        .render(state.output_device.output_size.into(), Transform::Normal)
-                        .expect("IMP get frame");
-                    // Draw a solid color to the current target at the specified destination with the specified color.
-
-                    let destination =
-                        Rectangle::from_loc_and_size((0, 0), state.output_device.output_size);
-                    frame
-                        .draw_solid(destination, &[], [0.0, 1.0, 1.0, 1.0])
-                        .unwrap();
-
-                    // Frame is done let's submit it
-                    state
-                        .output_device
-                        .gbm_surface
-                        .queue_buffer(None, Some(vec![]), ())
-                        .expect("IMP submit frame");
-
+                DrmEvent::VBlank(_handle) => {
                     state.output_device.gbm_surface.frame_submitted().unwrap();
+                    draw_frame(
+                        &mut state.output_device.gbm_surface,
+                        &mut state.gpu_manager,
+                        &state.render_node,
+                        state.output_device.output_size,
+                    );
                 }
                 DrmEvent::Error(_error) => (),
             }
@@ -342,4 +298,35 @@ fn main() {
     event_loop
         .run(None, &mut state, |_| {})
         .expect("problem with event loop");
+}
+
+fn draw_frame(
+    gbm_surface: &mut GbmBufferedSurface<GbmAllocator<DrmDeviceFd>, ()>,
+    gpu_manager: &mut GpuManager<GbmGlesBackend<GlesRenderer>>,
+    render_node: &DrmNode,
+    output_size: (i32, i32),
+) {
+    // Render first frame:
+    let (dmabuf, _age) = gbm_surface
+        .next_buffer()
+        .expect("IMP get next buffer to create the frame");
+    // After this call our OpenGl render will render to this buffer
+    let mut renderer = gpu_manager.single_renderer(render_node).unwrap();
+
+    renderer.bind(dmabuf).unwrap();
+
+    let mut frame = renderer
+        .render(output_size.into(), Transform::Normal)
+        .expect("IMP get frame");
+    // Draw a solid color to the current target at the specified destination with the specified color.
+
+    let destination = Rectangle::from_loc_and_size((0, 0), output_size);
+    frame
+        .draw_solid(destination, &[destination], [0.0, 1.0, 1.0, 1.0])
+        .unwrap();
+
+    // Frame is done let's submit it
+    gbm_surface
+        .queue_buffer(None, Some(vec![]), ())
+        .expect("IMP submit frame");
 }
