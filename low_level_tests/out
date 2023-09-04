@@ -1,1 +1,10 @@
 primary gpu founded by udev: 57857, "/dev/dri/card1"
+Other libinput event: DeviceAdded { device: Device @0x56019ce2a020 }
+Other libinput event: DeviceAdded { device: Device @0x56019ce301d0 }
+Other libinput event: DeviceAdded { device: Device @0x56019ce529e0 }
+Other libinput event: DeviceAdded { device: Device @0x56019ce59210 }
+Other libinput event: DeviceAdded { device: Device @0x56019ce614f0 }
+Other libinput event: DeviceAdded { device: Device @0x56019ce6ea40 }
+Other libinput event: DeviceAdded { device: Device @0x56019ce80ab0 }
+Other libinput event: DeviceAdded { device: Device @0x56019ce871b0 }
+Other libinput event: DeviceAdded { device: Device @0x56019ce8f690 }

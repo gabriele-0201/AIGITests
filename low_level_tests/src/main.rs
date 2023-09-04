@@ -22,7 +22,7 @@ use smithay::{
         input::Libinput,
         nix::fcntl::OFlag,
     },
-    utils::{DeviceFd, Logical, Point, Rectangle, Transform},
+    utils::{DeviceFd, Logical, Physical, Point, Rectangle, Transform},
     wayland::compositor::SurfaceData,
 };
 use smithay_drm_extras::drm_scanner::{DrmScanEvent, DrmScanner};
@@ -32,6 +32,7 @@ struct State {
     gpu_manager: GpuManager<GbmGlesBackend<GlesRenderer>>,
     render_node: DrmNode,
     output_device: OutputDevice,
+    pointer_location: Point<f64, Logical>,
 }
 
 struct OutputDevice {
@@ -62,19 +63,16 @@ fn main() {
     let libinput_backend = LibinputInputBackend::new(libinput_context.clone());
 
     // first location ALSO in smithay is (0,0)
-    let mut pointer_location: Point<f64, Logical> = (0.0, 0.0).into();
-
     event_loop
         .handle()
-        .insert_source(libinput_backend, move |event, _, _data| match event {
+        .insert_source(libinput_backend, move |event, _, state| match event {
             InputEvent::Keyboard { event } => {
                 let keycode = event.key_code();
                 let state = event.state();
                 println!("keycode: {keycode}, state {state:?}");
             }
             InputEvent::PointerMotion { event, .. } => {
-                pointer_location += event.delta();
-                println!("Pointer location: {pointer_location:?}");
+                state.pointer_location += event.delta();
             }
             InputEvent::PointerMotionAbsolute { event, .. } => {
                 println!("Pointer Motion Absolute: {event:?}");
@@ -241,6 +239,7 @@ fn main() {
                 &mut gpu_manager,
                 &render_node,
                 output_size,
+                (0.0, 0.0).into(),
             );
 
             // After this you will get VBlank event, in response to it you can render next frame
@@ -263,6 +262,7 @@ fn main() {
                         &mut state.gpu_manager,
                         &state.render_node,
                         state.output_device.output_size,
+                        state.pointer_location,
                     );
                 }
                 DrmEvent::Error(_error) => (),
@@ -292,6 +292,7 @@ fn main() {
             gbm_surface,
             output_size,
         },
+        pointer_location: (0.0, 0.0).into(),
     };
 
     // Start the loop
@@ -305,6 +306,7 @@ fn draw_frame(
     gpu_manager: &mut GpuManager<GbmGlesBackend<GlesRenderer>>,
     render_node: &DrmNode,
     output_size: (i32, i32),
+    pointer_location: Point<f64, Logical>,
 ) {
     // Render first frame:
     let (dmabuf, _age) = gbm_surface
@@ -320,9 +322,14 @@ fn draw_frame(
         .expect("IMP get frame");
     // Draw a solid color to the current target at the specified destination with the specified color.
 
-    let destination = Rectangle::from_loc_and_size((0, 0), output_size);
+    let screen = Rectangle::from_loc_and_size((0, 0), output_size);
+    let mouse_rect = Rectangle::from_loc_and_size(
+        (pointer_location.x as i32, pointer_location.y as i32),
+        (200, 200),
+    );
+    frame.clear([0.0, 0.0, 0.0, 0.0], &[screen]).unwrap();
     frame
-        .draw_solid(destination, &[destination], [0.0, 1.0, 1.0, 1.0])
+        .draw_solid(mouse_rect, &[screen], [0.0, 1.0, 1.0, 1.0])
         .unwrap();
 
     // Frame is done let's submit it
