@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 smithay = {git = "https://github.com/Smithay/smithay"}
 smithay-drm-extras = {git = "https://github.com/Smithay/smithay"}
+xcursor = "0.3.4"

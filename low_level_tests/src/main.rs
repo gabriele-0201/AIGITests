@@ -1,3 +1,6 @@
+mod pointer;
+
+use pointer::*;
 use smithay::{
     backend::{
         allocator::{
@@ -10,7 +13,7 @@ use smithay::{
         libinput::{LibinputInputBackend, LibinputSessionInterface},
         renderer::{
             gles::GlesRenderer,
-            multigpu::{gbm::GbmGlesBackend, GpuManager, MultiRenderer},
+            multigpu::{gbm::GbmGlesBackend, GpuManager, MultiRenderer, MultiTexture},
             Bind, Frame, Renderer,
         },
         session::{libseat::LibSeatSession, Session},
@@ -33,6 +36,7 @@ struct State {
     render_node: DrmNode,
     output_device: OutputDevice,
     pointer_location: Point<f64, Logical>,
+    pointer_element: PointerElement<MultiTexture>,
 }
 
 struct OutputDevice {
@@ -156,6 +160,8 @@ fn main() {
         .single_renderer(&render_node)
         .expect("IMP extract renderer");
 
+    let pointer_element = PointerElement::new(&mut renderer);
+
     let mut drm_scanner: DrmScanner = DrmScanner::default();
     // The following should be called every time Udev::Changed event is fired,
     // to make sure all newly connected outputs are initialized,
@@ -240,6 +246,7 @@ fn main() {
                 &render_node,
                 output_size,
                 (0.0, 0.0).into(),
+                &pointer_element,
             );
 
             // After this you will get VBlank event, in response to it you can render next frame
@@ -255,7 +262,7 @@ fn main() {
             // You will get DrmEvent::VBlank events here,
             // VBlank means that the rendering of given output has compleated and output is ready for a next frame.
             match event {
-                DrmEvent::VBlank(_handle) => {
+                DrmEvent::VBlank(_crtc) => {
                     state.output_device.gbm_surface.frame_submitted().unwrap();
                     draw_frame(
                         &mut state.output_device.gbm_surface,
@@ -263,6 +270,7 @@ fn main() {
                         &state.render_node,
                         state.output_device.output_size,
                         state.pointer_location,
+                        &state.pointer_element,
                     );
                 }
                 DrmEvent::Error(_error) => (),
@@ -286,6 +294,9 @@ fn main() {
         .unwrap();
 
     let mut state = State {
+        pointer_element: PointerElement::new(
+            &mut gpu_manager.single_renderer(&render_node).unwrap(),
+        ),
         gpu_manager,
         render_node,
         output_device: OutputDevice {
@@ -307,6 +318,7 @@ fn draw_frame(
     render_node: &DrmNode,
     output_size: (i32, i32),
     pointer_location: Point<f64, Logical>,
+    pointer_element: &PointerElement<MultiTexture>,
 ) {
     // Render first frame:
     let (dmabuf, _age) = gbm_surface
@@ -323,14 +335,26 @@ fn draw_frame(
     // Draw a solid color to the current target at the specified destination with the specified color.
 
     let screen = Rectangle::from_loc_and_size((0, 0), output_size);
-    let mouse_rect = Rectangle::from_loc_and_size(
+    let mouse_rect: Rectangle<i32, Physical> = Rectangle::from_loc_and_size(
         (pointer_location.x as i32, pointer_location.y as i32),
         (200, 200),
     );
     frame.clear([0.0, 0.0, 0.0, 0.0], &[screen]).unwrap();
+    /* Not draw any more the solid rectangle
     frame
         .draw_solid(mouse_rect, &[screen], [0.0, 1.0, 1.0, 1.0])
         .unwrap();
+    */
+
+    frame.render_texture_at(
+        &pointer_element.texture,
+        (pointer_location.x as i32, pointer_location.y as i32).into(),
+        1,
+        1.0,
+        Transform::Normal,
+        &[screen],
+        1.0,
+    );
 
     // Frame is done let's submit it
     gbm_surface
