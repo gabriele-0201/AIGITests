@@ -31,6 +31,7 @@ use smithay::{
         wayland_server::Display,
     },
     utils::DeviceFd,
+    wayland::dmabuf::DmabufState,
 };
 use smithay_drm_extras::drm_scanner::DrmScanner;
 
@@ -50,6 +51,10 @@ const SUPPORTED_FORMATS: &[Fourcc] = &[
 pub struct BackendData {
     session: LibSeatSession,
     device_data: DeviceData,
+    // primary_gpu: DrmNode, // I will not use it, it seems useless
+    gpu_manager: GpuManager<GbmGlesBackend<GlesRenderer>>,
+    // Alloctor SEEMS to be needed only for multiple GPU systems
+    // allocator: Option<Box<dyn Allocator<Buffer = Dmabuf, Error = AnyError>>>,
 }
 
 pub struct DeviceData {
@@ -66,9 +71,12 @@ pub struct DeviceData {
 }
 
 impl BackendData {
+    // This function should prepare ALL the backend
+    // and:
+    // - Insert in the event loop everything related to the backend managment
     pub fn init(
         event_loop: &mut EventLoop<LoopData>,
-        display: &mut Display<Self>,
+        // display: &mut Display<Self>,
     ) -> Result<Self, Box<dyn std::error::Error>> {
         // Initialize session
         // The session_notifier should be insered in the event_loop
@@ -89,7 +97,7 @@ impl BackendData {
             .unwrap()
             .and_then(|x| {
                 Some((
-                    x,
+                    x.clone(),
                     DrmNode::from_path(x)
                         .ok()?
                         .node_with_type(NodeType::Render)?
@@ -104,27 +112,17 @@ impl BackendData {
         // (each udev device is a graphics device ?!)
 
         let (gpu_manager, device_data) =
-            Self::init_device(&session, primary_gpu_path, primary_gpu_node)?;
+            Self::init_device(&mut session, primary_gpu_path, primary_gpu_node)?;
 
-        // let mut backend_data = BackendData {
-        //     devices: HashMap::new(),
-        // };
-
-        // Init AigiState ????
-
-        // Initialize the udev backend
-        //?? let udev_backend = UdevBackend::new(&session.seat()).unwrap();
-
-        //?? // Scan all the already present devices
-        //?? for (device_id, path) in udev_backend.device_list() {
-        //??     backend_data.udev_add_device(device_id, path)?;
-        //?? }
-
-        todo!()
+        Ok(BackendData {
+            session,
+            gpu_manager,
+            device_data,
+        })
     }
 
     fn init_device(
-        session: &LibSeatSession,
+        session: &mut LibSeatSession,
         path: PathBuf,
         node: DrmNode,
     ) -> Result<
@@ -169,8 +167,6 @@ impl BackendData {
         // The following should be called every time Udev::Changed event is fired,
         // to make sure all newly connected outputs are initialized,
         let scan_results = drm_scanner.scan_connectors(&drm);
-        let added = scan_results;
-
         // just take the first connected connector and crtc
         let (connector, crtc) = match scan_results
             .connected
@@ -233,7 +229,7 @@ impl BackendData {
     }
 
     // This method should MAYBE render the frame
-    pub fn render_frame(&mut self, ) ->  {
+    pub fn render_frame(&mut self) {
         todo!()
     }
 }

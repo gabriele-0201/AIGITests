@@ -77,7 +77,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Create the Wayand Display  (main objecet)
     let mut display: Display<AIGIState> = Display::new()?;
 
-    let mut backend_data = BackendData::init(&mut event_loop, &mut display);
+    let mut backend_data = BackendData::init(&mut event_loop /* , &mut display*/);
 
     // Create the Initial State of the composito
     let mut aigi_state = AIGIState::new(&mut event_loop, &mut display)?;
