@@ -8,8 +8,12 @@ use super::LoopData;
 
 use smithay::{
     backend::{
-        allocator::GbmDevice,
-        drm::{DrmDevice, DrmDeviceFd, DrmNode, NodeType},
+        allocator::{
+            gbm::GbmDevice,
+            gbm::{GbmAllocator, GbmBufferFlags},
+            Fourcc,
+        },
+        drm::{DrmDevice, DrmDeviceFd, DrmNode, GbmBufferedSurface, NodeType},
         egl::{EGLDevice, EGLDisplay},
         libinput::{LibinputInputBackend, LibinputSessionInterface},
         renderer::{
@@ -27,9 +31,21 @@ use smithay::{
         wayland_server::Display,
     },
     utils::DeviceFd,
-    wayland::compositor::SurfaceData,
 };
 use smithay_drm_extras::drm_scanner::DrmScanner;
+
+// we cannot simply pick the first supported format of the intersection of *all* formats, because
+// - we do not want something like Abgr4444, which looses color information, if something better is available
+// - some formats might perform terribly
+// - we might need some work-arounds, if one supports modifiers, but the other does not
+//
+// So lets just pick `ARGB2101010` (10-bit) or `ARGB8888` (8-bit) for now, they are widely supported.
+const SUPPORTED_FORMATS: &[Fourcc] = &[
+    Fourcc::Abgr2101010,
+    Fourcc::Argb2101010,
+    Fourcc::Abgr8888,
+    Fourcc::Argb8888,
+];
 
 pub struct BackendData {
     session: LibSeatSession,
@@ -37,12 +53,16 @@ pub struct BackendData {
 }
 
 pub struct DeviceData {
-    surfaces: HashMap<crtc::Handle, SurfaceData>,
-    gbm: GbmDevice<DrmDeviceFd>,
     drm: DrmDevice,
+    gbm: GbmDevice<DrmDeviceFd>,
+    // A single surface is handled
+    // surfaces: HashMap<crtc::Handle, ?SurfaceData?>,
+    gbm_surface: GbmBufferedSurface<GbmAllocator<DrmDeviceFd>, ()>,
     // drm_scanner: DrmScanner, not saved because no real time update is managed
     render_node: DrmNode,
-    registration_token: RegistrationToken,
+    // This is used to save the token related to
+    // the callback inserted in the event Loop to manage VBlank events!
+    //registration_token: RegistrationToken,
 }
 
 impl BackendData {
@@ -83,7 +103,7 @@ impl BackendData {
         // udev_device / gpu is handled (the primary!)
         // (each udev device is a graphics device ?!)
 
-        let (render_node, gpu_manager, device_data) =
+        let (gpu_manager, device_data) =
             Self::init_device(&session, primary_gpu_path, primary_gpu_node)?;
 
         // let mut backend_data = BackendData {
@@ -109,7 +129,6 @@ impl BackendData {
         node: DrmNode,
     ) -> Result<
         (
-            DrmNode,                                  // Renderer Node
             GpuManager<GbmGlesBackend<GlesRenderer>>, // Gpu Manager
             DeviceData, // All the initialized information about the Device that will render stuff on the screen
         ),
@@ -129,10 +148,10 @@ impl BackendData {
 
         // Creation of the gbm device and the GbmAllocator
         let gbm = GbmDevice::new(drm.device_fd().clone())?;
-        //??? let gbm_allocator = GbmAllocator::new(
-        //???     gbm.clone(),
-        //???     GbmBufferFlags::RENDERING | GbmBufferFlags::SCANOUT,
-        //??? );
+        let gbm_allocator = GbmAllocator::new(
+            gbm.clone(),
+            GbmBufferFlags::RENDERING | GbmBufferFlags::SCANOUT,
+        );
 
         // We also want to aquire the node of a device that will be doing the rendering
         // (On typical desktop it will probably equal the node that DrmDevice was created from,
@@ -152,42 +171,69 @@ impl BackendData {
         let scan_results = drm_scanner.scan_connectors(&drm);
         let added = scan_results;
 
-        // just take the first connected connector
-        if let (connector, Some(crtc)) = scan_results
+        // just take the first connected connector and crtc
+        let (connector, crtc) = match scan_results
             .connected
             .iter()
             .next()
             .ok_or("No Connectors available")?
         {
-            // Monitors have diferent modes that can be selected, eg. 1080x1920@90hz
-            // let's choose the preferred one
-            let mode_id = connector
-                .modes()
-                .iter()
-                .position(|mode| mode.mode_type().contains(ModeTypeFlags::PREFERRED))
-                .unwrap_or(0);
+            (connector, Some(crtc)) => (connector, crtc),
+            _ => return Err("No available crtc".into()),
+        };
 
-            let drm_mode = connector.modes()[mode_id];
-            // TODO
-        }
+        // Monitors have diferent modes that can be selected, eg. 1080x1920@90hz
+        // let's choose the preferred one
+        let mode_id = connector
+            .modes()
+            .iter()
+            .position(|mode| mode.mode_type().contains(ModeTypeFlags::PREFERRED))
+            .unwrap_or(0);
 
-        todo!()
+        let drm_mode = connector.modes()[mode_id];
+
+        // Createa a surface that can be used to render stuff
+        let drm_surface = drm.create_surface(*crtc, drm_mode, &[connector.handle()])?;
+
+        // TODO: inside Anvil while preparing the connector also all the
+        // things realted to AnvilState are prepared (like the Output or the mapping
+        // of the Output in the Space) -> I preperf to SPLIT the things and doing that later
+        // in a separed function, here I just what to initialized all the backend stuff
+        //
+        // maybe the output name should be prepared here
+        // let output_name = format!("{}-{}", connector.interface().as_str(), connector.interface_id());
+
+        // I will NOT use the DRM Compositor with different Planes for NOW
+        // An update of the project could involve the addition of multiple planes
+        // For now Only a surface Will be scanout to the screen (the gbm_surface)
+        // TODO
+
+        let mut renderer = gpu_manager.single_renderer(&render_node)?;
+        let render_formats = renderer
+            .as_mut()
+            .egl_context()
+            .dmabuf_render_formats()
+            .clone();
+
+        let mut gbm_surface = GbmBufferedSurface::new(
+            drm_surface,
+            gbm_allocator.clone(),
+            SUPPORTED_FORMATS,
+            render_formats,
+        )?;
+
+        let device_data = DeviceData {
+            drm,
+            gbm,
+            gbm_surface,
+            render_node,
+        };
+
+        Ok((gpu_manager, device_data))
     }
 
-    pub fn udev_add_device(
-        &mut self,
-        device_id: u64,
-        path: &Path,
-    ) -> Result<(), Box<dyn std::error::Error>> {
-        let node = DrmNode::from_dev_id(device_id)?;
-        todo!()
-    }
-
-    pub fn udev_remove_device(
-        &mut self,
-        device_id: u64,
-        path: &Path,
-    ) -> Result<(), Box<dyn std::error::Error>> {
+    // This method should MAYBE render the frame
+    pub fn render_frame(&mut self, ) ->  {
         todo!()
     }
 }
