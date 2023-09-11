@@ -356,6 +356,8 @@ fn draw_frame(
         1.0,
     );
 
+    let gles_frame = frame.as_mut();
+
     // Frame is done let's submit it
     gbm_surface
         .queue_buffer(None, Some(vec![]), ())
