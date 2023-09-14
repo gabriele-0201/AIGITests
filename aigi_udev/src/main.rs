@@ -56,7 +56,11 @@ use smithay::{
         socket::ListeningSocketSource,
     },
 };
-use std::{os::fd::AsRawFd, sync::Arc};
+use std::{
+    os::fd::AsRawFd,
+    sync::{atomic::Ordering, Arc},
+    time::Duration,
+};
 
 pub struct LoopData {
     state: AIGIState,
@@ -72,24 +76,39 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Setting up everyghin for the Wayland Compositor
 
     // Create the EventLoop
+    //
+    // In the EventLoop will be inserted notifiers that will trigger some
+    // callbacks, the callbacks have as arguments:
+    // + the notifier data
+    // + the state of the EventLoop (LoopData in this case, composed by
+    // the State of the compositor and the main object of the wayland protocol,
+    // the Display (wl_display))
+    // + and some Metadata (BOH)
     let mut event_loop: EventLoop<LoopData> = EventLoop::try_new()?;
 
-    // Create the Wayand Display  (main objecet)
+    // Initialize the Backend and get all the important notifiers
+    // that needs to be inserted in the event Loop
+    //
+    // Each notifier has a different functionality but before
+    // insert those in the event_loop let's create the state and
+    // then see how the notifiers interact with the State of the Compositor
+    let (backend_data, notifiers) = BackendData::init()?;
+
+    // Creation of the Wayand Display  (main objecet of the protocol)
     let mut display: Display<AIGIState> = Display::new()?;
 
-    let mut backend_data = BackendData::init(&mut event_loop /* , &mut display*/);
-
-    // Create the Initial State of the composito
-    let mut aigi_state = AIGIState::new(&mut event_loop, &mut display)?;
+    // Initialize the State of the compositor
+    let mut aigi_state = AIGIState::init(&mut event_loop, &mut display, backend_data)?;
 
     // Configure the server Socket
-    let socket = ListeningSocketSource::new_auto()?;
-    let socket_name = socket.socket_name().to_os_string();
+    let socket_notifier = ListeningSocketSource::new_auto()?;
+    let socket_name = socket_notifier.socket_name().to_os_string();
 
     // Add Wayland socket to event loop
+    /* To be moved together with all other Notifiers
     event_loop
         .handle()
-        .insert_source(socket, |stream, _, state| {
+        .insert_source(socket_notifier, |stream, _, state| {
             // Insert a new client into Display with data associated with that client.
             // This starts the management of the client, the communication is over the UnixStream.
             state
@@ -98,35 +117,39 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 .insert_client(stream, Arc::new(ClientState::default()))
                 .unwrap();
         })?;
-
+     */
     // Add the Display itself into the event loop to dispatch all the request
-    event_loop.handle().insert_source(
-        Generic::new(
-            display.backend().poll_fd().as_raw_fd(),
-            Interest::READ,
-            Mode::Level,
-        ),
-        |_, _, state| {
+    let display_notifier = Generic::new(
+        display.backend().poll_fd().as_raw_fd(),
+        Interest::READ,
+        Mode::Level,
+    );
+    /* To be moved together with all other Notifiers
+    event_loop
+        .handle()
+        .insert_source(display_notifier, |_, _, state| {
             // Dispatch requests received from clients to callbacks for clients. The callbacks will
             // probably need to access the current compositor state, so that is passed along.
             state.display.dispatch_clients(&mut state.state).unwrap();
             // we must return a PostAction::Continue to tell the event loop to continue listening for events.
             Ok(PostAction::Continue)
-        },
-    )?;
+        })?;
+    */
 
-    let (mut backend, mut winit) = winit::init()?;
-
-    let mode = output::Mode {
-        size: backend.window_size().physical_size,
-        refresh: 60_000,
-    };
+    // Let's create the Output Global
+    let drm_surface = aigi_state.backend_data.device_data.gbm_surface.surface();
+    let mode = drm_surface.current_mode();
+    let wl_mode = output::Mode::from(mode);
 
     // Tells the client what the physical properties of the output are.
-    // Create a new output which is an area in the compositor space that can be used by clients.
+    // Create a new output which is an area in the compositor space
+    // that can be used by clients.
     // Normally represents a monitor used by the compositor.
+    //
+    // TODO: understan why here is insered 0,0 and only then modified
+    // why I can't diretly create it in the correct way?
     let output = output::Output::new(
-        "winit".to_string(),
+        "monitor1".to_string(), // random name
         output::PhysicalProperties {
             size: (0, 0).into(),
             subpixel: Subpixel::Unknown,
@@ -136,16 +159,34 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     // Clients can access the global objects to get the physical properties and output state.
     let _global = output.create_global::<AIGIState>(&display.handle());
-    output.change_current_state(
-        Some(mode),
-        Some(Transform::Flipped180),
-        None,
-        Some((0, 0).into()),
-    );
-    output.set_preferred(mode);
+
+    // last argoment (0,0) because it is mapped at the top right of the space
+    output.change_current_state(Some(wl_mode), None, None, Some((0, 0).into()));
+    output.set_preferred(wl_mode);
 
     // Set the output of a space with coordinates for the upper left corner of the surface.
     aigi_state.space.map_output(&output, (0, 0));
+
+    // TODO
+    // Let's create the Dmabuf Global
+
+    // TODO remaining things!! (not sure about what is missing beside rendering)
+
+    while aigi_state.running.load(Ordering::SeqCst) {
+        let mut loop_data = LoopData {
+            state: aigi_state,
+            display,
+        };
+        let result = event_loop.dispatch(Some(Duration::from_millis(16)), &mut loop_data);
+
+        if result.is_err() {
+            loop_data.state.running.store(false, Ordering::SeqCst);
+        } else {
+            loop_data.state.space.refresh();
+            //loop_data.state.popups.cleanup();
+            loop_data.display.flush_clients().unwrap();
+        }
+    }
 
     let mut damage_tracker = OutputDamageTracker::from_output(&output);
 
@@ -360,14 +401,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             TimeoutAction::ToDuration(core::time::Duration::from_millis(16))
         })
         .unwrap();
-
-    let mut data = LoopData {
-        state: aigi_state,
-        display,
-    };
-
-    // Run the event loop
-    event_loop.run(None, &mut data, |_| {})?;
 
     Ok(())
 }

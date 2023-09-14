@@ -16,7 +16,7 @@ pub struct TilingState {
 }
 
 impl TilingState {
-    pub fn new() -> Self {
+    pub fn init() -> Self {
         Self {
             tile_tree_head: None,
             tile_info: HashMap::new(),
@@ -123,8 +123,6 @@ impl TilingState {
             .tile_info
             .remove(wl_surface)
             .expect("IMP having surface NOT present in tile_info map");
-
-        println!("TILE TO BE DESTROYED: {:?}", tile_to_destroy);
 
         // Get the sibiling that should cover the all the destroyed space
         let container = match tile_to_destroy.borrow().container.as_ref() {

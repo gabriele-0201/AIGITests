@@ -13,14 +13,17 @@ use smithay::{
             gbm::{GbmAllocator, GbmBufferFlags},
             Fourcc,
         },
-        drm::{DrmDevice, DrmDeviceFd, DrmNode, GbmBufferedSurface, NodeType},
+        drm::{DrmDevice, DrmDeviceFd, DrmDeviceNotifier, DrmNode, GbmBufferedSurface, NodeType},
         egl::{EGLDevice, EGLDisplay},
         libinput::{LibinputInputBackend, LibinputSessionInterface},
         renderer::{
             gles::GlesRenderer,
             multigpu::{gbm::GbmGlesBackend, GpuManager},
         },
-        session::{libseat::LibSeatSession, Session},
+        session::{
+            libseat::{LibSeatSession, LibSeatSessionNotifier},
+            Session,
+        },
         udev::{primary_gpu, UdevBackend},
     },
     reexports::{
@@ -49,35 +52,42 @@ const SUPPORTED_FORMATS: &[Fourcc] = &[
 ];
 
 pub struct BackendData {
-    session: LibSeatSession,
-    device_data: DeviceData,
+    pub session: LibSeatSession,
+    pub device_data: DeviceData,
     // primary_gpu: DrmNode, // I will not use it, it seems useless
-    gpu_manager: GpuManager<GbmGlesBackend<GlesRenderer>>,
+    pub gpu_manager: GpuManager<GbmGlesBackend<GlesRenderer>>,
     // Alloctor SEEMS to be needed only for multiple GPU systems
     // allocator: Option<Box<dyn Allocator<Buffer = Dmabuf, Error = AnyError>>>,
 }
 
 pub struct DeviceData {
-    drm: DrmDevice,
-    gbm: GbmDevice<DrmDeviceFd>,
+    pub drm: DrmDevice,
+    pub gbm: GbmDevice<DrmDeviceFd>,
     // A single surface is handled
     // surfaces: HashMap<crtc::Handle, ?SurfaceData?>,
-    gbm_surface: GbmBufferedSurface<GbmAllocator<DrmDeviceFd>, ()>,
+    pub gbm_surface: GbmBufferedSurface<GbmAllocator<DrmDeviceFd>, ()>,
     // drm_scanner: DrmScanner, not saved because no real time update is managed
-    render_node: DrmNode,
+    pub render_node: DrmNode,
     // This is used to save the token related to
     // the callback inserted in the event Loop to manage VBlank events!
     //registration_token: RegistrationToken,
 }
 
+pub struct Notifiers {
+    session: LibSeatSessionNotifier,
+    libinput: LibinputInputBackend,
+    drm: DrmDeviceNotifier,
+}
+
 impl BackendData {
-    // This function should prepare ALL the backend
-    // and:
-    // - Insert in the event loop everything related to the backend managment
-    pub fn init(
-        event_loop: &mut EventLoop<LoopData>,
-        // display: &mut Display<Self>,
-    ) -> Result<Self, Box<dyn std::error::Error>> {
+    // This function should prepare ALL the backend and provide to the caller
+    // different notifiers that needs to be inserted in the event_loop
+    // + session_notifier (session paused or reactivated)
+    // + libinput_notifier (input handler)
+    // + (not for now) udev_backend (udev hot plug events)
+    // + drm_notifier (drm events, such as VBlank)
+    // + timer to manage renering? (NOT sure about this, dig into anvi/src/udev.rs in `frame_finish` function)
+    pub fn init() -> Result<(Self, Notifiers), Box<dyn std::error::Error>> {
         // Initialize session
         // The session_notifier should be insered in the event_loop
         // by the caller of this method
@@ -89,7 +99,7 @@ impl BackendData {
         >(session.clone().into());
         libinput_context.udev_assign_seat(&session.seat()).unwrap();
         // Handler to be managed by the caller
-        let libinput_backend = LibinputInputBackend::new(libinput_context.clone());
+        let libinput_notifier = LibinputInputBackend::new(libinput_context.clone());
 
         // Search primary GPU and save it in a DrmNode
         // if not found then return Error
@@ -111,14 +121,21 @@ impl BackendData {
         // udev_device / gpu is handled (the primary!)
         // (each udev device is a graphics device ?!)
 
-        let (gpu_manager, device_data) =
+        let (gpu_manager, device_data, drm_notifier) =
             Self::init_device(&mut session, primary_gpu_path, primary_gpu_node)?;
 
-        Ok(BackendData {
-            session,
-            gpu_manager,
-            device_data,
-        })
+        Ok((
+            BackendData {
+                session,
+                gpu_manager,
+                device_data,
+            },
+            Notifiers {
+                session: session_notifier,
+                libinput: libinput_notifier,
+                drm: drm_notifier,
+            },
+        ))
     }
 
     fn init_device(
@@ -129,6 +146,7 @@ impl BackendData {
         (
             GpuManager<GbmGlesBackend<GlesRenderer>>, // Gpu Manager
             DeviceData, // All the initialized information about the Device that will render stuff on the screen
+            DrmDeviceNotifier, // drm_notifier
         ),
         Box<dyn std::error::Error>,
     > {
@@ -142,7 +160,7 @@ impl BackendData {
         let fd = DrmDeviceFd::new(unsafe { DeviceFd::from_raw_fd(fd) });
 
         // Now we can initialize the drm device
-        let (drm, drm_event_source) = DrmDevice::new(fd, false)?;
+        let (drm, drm_notifier) = DrmDevice::new(fd, false)?;
 
         // Creation of the gbm device and the GbmAllocator
         let gbm = GbmDevice::new(drm.device_fd().clone())?;
@@ -202,7 +220,6 @@ impl BackendData {
         // I will NOT use the DRM Compositor with different Planes for NOW
         // An update of the project could involve the addition of multiple planes
         // For now Only a surface Will be scanout to the screen (the gbm_surface)
-        // TODO
 
         let mut renderer = gpu_manager.single_renderer(&render_node)?;
         let render_formats = renderer
@@ -211,7 +228,7 @@ impl BackendData {
             .dmabuf_render_formats()
             .clone();
 
-        let mut gbm_surface = GbmBufferedSurface::new(
+        let gbm_surface = GbmBufferedSurface::new(
             drm_surface,
             gbm_allocator.clone(),
             SUPPORTED_FORMATS,
@@ -225,7 +242,7 @@ impl BackendData {
             render_node,
         };
 
-        Ok((gpu_manager, device_data))
+        Ok((gpu_manager, device_data, drm_notifier))
     }
 
     // This method should MAYBE render the frame
