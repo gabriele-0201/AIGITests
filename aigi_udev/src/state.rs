@@ -7,6 +7,7 @@ use anyhow::{Error, Result};
 use smithay::backend::allocator::dmabuf::Dmabuf;
 use smithay::backend::renderer::{ImportDma, ImportMemWl};
 use smithay::delegate_dmabuf;
+use smithay::reexports::calloop::LoopHandle;
 use smithay::wayland::dmabuf::{
     DmabufFeedback, DmabufFeedbackBuilder, DmabufGlobal, DmabufHandler, DmabufState, ImportError,
 };
@@ -63,6 +64,9 @@ pub struct AIGIState {
 
     // main wayland object
     pub display_handle: DisplayHandle,
+
+    // loop handle
+    pub handle: LoopHandle<'static, LoopData>,
 
     // Atomic bool to keeps track of the running compositor
     pub running: AtomicBool,
@@ -514,10 +518,11 @@ impl AIGIState {
 
         // init dmabuf default feeback with what our device supports
         let dmabuf_formats = renderer.dmabuf_formats().collect::<Vec<_>>();
-        let default_feedback = DmabufFeedbackBuilder::new(render_node.dev_id(), dmabuf_formats)
-            .build()
-            .unwrap();
-        let mut dmabuf_state = DmabufState::new();
+        let dmabuf_default_feedback =
+            DmabufFeedbackBuilder::new(render_node.dev_id(), dmabuf_formats)
+                .build()
+                .unwrap();
+        let dmabuf_state = DmabufState::new();
 
         // TODO: the creation of globals should not be in the
         // initialization of the state!!
@@ -532,6 +537,7 @@ impl AIGIState {
 
         Ok(AIGIState {
             display_handle: dh,
+            handle: event_loop.handle(),
             space,
             compositor_state,
             xdg_shell_state,
@@ -544,6 +550,9 @@ impl AIGIState {
             cursor_status: CursorImageStatus::Default,
             tiling_state,
             running: AtomicBool::new(true),
+            backend_data,
+            dmabuf_default_feedback,
+            dmabuf_state,
         })
     }
 }

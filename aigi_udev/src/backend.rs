@@ -74,9 +74,9 @@ pub struct DeviceData {
 }
 
 pub struct Notifiers {
-    session: LibSeatSessionNotifier,
-    libinput: LibinputInputBackend,
-    drm: DrmDeviceNotifier,
+    pub session: LibSeatSessionNotifier,
+    pub libinput: LibinputInputBackend,
+    pub drm: DrmDeviceNotifier,
 }
 
 impl BackendData {
