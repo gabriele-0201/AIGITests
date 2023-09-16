@@ -8,6 +8,7 @@ mod tiling;
 use backend::BackendData;
 use input_handler::{handle_input, Action};
 use pointer::{PointerElement, PointerRenderElement};
+use render::initial_rendering;
 use state::{AIGIState, ClientState};
 
 use anyhow::{Error, Result};
@@ -19,6 +20,7 @@ use smithay::{
             damage::OutputDamageTracker,
             element::{surface::WaylandSurfaceRenderElement, AsRenderElements},
             gles::{GlesRenderer, GlesTexture},
+            Bind,
         },
         winit::{self, WinitEvent},
     },
@@ -190,7 +192,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .handle()
         .insert_source(notifiers.drm, |event, _, loop_data| match event {
             DrmEvent::VBlank(_crtc) => {
-                println!("VBlank Event!");
                 render::frame_showed(&mut loop_data.state)
                     .expect("Something wrong happened during the rendering phase");
             }
@@ -213,6 +214,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             panic!("Aborted");
         })
         .unwrap();
+
+    // initial rendering
+    let mut renderer = aigi_state
+        .backend_data
+        .gpu_manager
+        .single_renderer(&aigi_state.backend_data.device_data.render_node)
+        .unwrap();
+
+    // //AGAIN!?!?!?!?!
+    let gbm_surface = &mut aigi_state.backend_data.device_data.gbm_surface;
+
+    let output = aigi_state
+        .space
+        .outputs()
+        .next()
+        .expect("Impossible not having an output mapped in the Space");
+    initial_rendering(gbm_surface, &output, &mut renderer, &aigi_state.space);
 
     while aigi_state.running.load(Ordering::SeqCst) {
         let mut loop_data = LoopData {

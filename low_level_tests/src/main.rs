@@ -103,25 +103,25 @@ fn main() {
     /*
      * Initialize the udev backend
      */
-    let udev_backend = UdevBackend::new(&session.seat()).unwrap();
+    // let udev_backend = UdevBackend::new(&session.seat()).unwrap();
+    //
+    // for (device_id, path) in udev_backend.device_list() {
+    //     if path == primary_gpu_path {
+    //         println!("primary gpu founded by udev: {device_id:?}, {path:?}");
+    //         continue;
+    //     }
 
-    for (device_id, path) in udev_backend.device_list() {
-        if path == primary_gpu_path {
-            println!("primary gpu founded by udev: {device_id:?}, {path:?}");
-            continue;
-        }
+    //     println!("device founded by udev,: {device_id:?}, {path:?}");
 
-        println!("device founded by udev,: {device_id:?}, {path:?}");
-
-        /*
-        match DrmNode::from_dev_id(device_id) {
-            Ok(node) => {}
-            Err(err) => {
-                println!("Impossible get DrmNode from device {device_id:?}, err: {err}");
-            }
-        }
-        */
-    }
+    //     /*
+    //     match DrmNode::from_dev_id(device_id) {
+    //         Ok(node) => {}
+    //         Err(err) => {
+    //             println!("Impossible get DrmNode from device {device_id:?}, err: {err}");
+    //         }
+    //     }
+    //     */
+    // }
 
     // Open the file descriptor
     let fd = session
@@ -278,12 +278,12 @@ fn main() {
         });
 
     // Insert in the Loop Udev Events callback
-    event_loop
-        .handle()
-        .insert_source(udev_backend, |event, _, _state| {
-            println!("new udevEvent: {event:?}");
-        })
-        .unwrap();
+    // event_loop
+    //     .handle()
+    //     .insert_source(udev_backend, |event, _, _state| {
+    //         println!("new udevEvent: {event:?}");
+    //     })
+    //     .unwrap();
 
     // Insert timer in the loop
     event_loop

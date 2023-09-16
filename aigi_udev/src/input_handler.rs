@@ -1,6 +1,9 @@
 use smithay::{
     backend::{
-        input::{AbsolutePositionEvent, Event, InputEvent, KeyState, KeyboardKeyEvent},
+        input::{
+            AbsolutePositionEvent, Event, InputEvent, KeyState, KeyboardKeyEvent,
+            PointerMotionEvent,
+        },
         libinput::LibinputInputBackend,
     },
     input::keyboard::{keysyms, FilterResult},
@@ -123,6 +126,9 @@ pub fn handle_input(state: &mut AIGIState, event: InputEvent<LibinputInputBacken
                     time: event.time_msec(),
                 },
             );
+        }
+        InputEvent::PointerMotion { event, .. } => {
+            state.pointer_location += event.delta();
         }
         event => println!("Other input to handle: {event:?}"),
     }

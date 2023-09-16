@@ -111,7 +111,7 @@ pub fn render_new_frame<'a, 'b>(
     // only two sets for now, the cursor image and the one present in the Space
 
     // An element that renders the pointer when rendering the output to display.
-    let mut pointer_element = PointerElement::<MultiTexture>::default();
+    let mut pointer_element = PointerElement::<MultiTexture>::new(renderer);
 
     // Update the pointer element with the clock to determine which xcursor image to show,
     // and the cursor status. The status can be set to a surface by a window to show a
@@ -121,17 +121,22 @@ pub fn render_new_frame<'a, 'b>(
 
     // Get the cursor position if the output is fractionally scaled.
     let scale = Scale::from(output.current_scale().fractional_scale());
-    let cursor_pos = pointer_location;
-    let cursor_pos_scaled = cursor_pos.to_physical(scale).to_i32_round();
+    //let cursor_pos = pointer_location;
+    //let cursor_pos_scaled = cursor_pos.to_physical(scale).to_i32_round();
+
+    // println!("cursor pos: {:?}", cursor_pos);
 
     // Get the rendered elements from the pointer element.
     let custom_elements = pointer_element
         .render_elements::<PointerRenderElement<UdevRenderer<'a, 'b>>>(
             renderer,
-            cursor_pos_scaled,
+            //cursor_pos_scaled,
+            pointer_location.to_physical(1.0).to_i32_round(),
             scale,
             1.0,
         );
+
+    println!("custom elements len: {}", custom_elements.len());
 
     let (dmabuf, age) = gbm_surface.next_buffer()?;
     renderer.bind(dmabuf)?;
@@ -154,7 +159,7 @@ pub fn render_new_frame<'a, 'b>(
     )
     .unwrap();
 
-    gbm_surface.queue_buffer(None, Some(vec![]), ());
+    gbm_surface.queue_buffer(None, None, ()).unwrap();
 
     // TODO: is this important?
     // For each of the windows send the frame callbacks to windows telling them to draw.
@@ -168,4 +173,45 @@ pub fn render_new_frame<'a, 'b>(
     //});
 
     Ok(())
+}
+
+pub fn initial_rendering<'a, 'b>(
+    /*state: &mut AIGIState*/
+    gbm_surface: &mut GbmBufferedSurface<GbmAllocator<DrmDeviceFd>, ()>,
+    output: &Output,
+    renderer: &mut UdevRenderer<'a, 'b>,
+    space: &Space<Window>,
+) {
+    // let surface = &mut state.backend_data.device_data.gbm_surface;
+    // let mut renderer = state
+    //     .backend_data
+    //     .gpu_manager
+    //     .single_renderer(&state.backend_data.device_data.render_node)
+    //     .unwrap();
+
+    let (dmabuf, age) = gbm_surface.next_buffer().unwrap();
+    renderer.bind(dmabuf).unwrap();
+
+    // let output = state
+    //     .space
+    //     .outputs()
+    //     .next()
+    //     .expect("Impossible not having an output mapped in the Space");
+
+    // insered just because I can't do without
+    let mut damage_tracker = OutputDamageTracker::from_output(&output);
+
+    smithay::desktop::space::render_output::<_, PointerRenderElement<UdevRenderer<'a, 'b>>, _, _>(
+        output,
+        renderer,
+        1.0,
+        0,
+        [space],
+        &[],
+        &mut damage_tracker,
+        [0.1, 0.1, 0.1, 1.0],
+    )
+    .unwrap();
+
+    gbm_surface.queue_buffer(None, None, ()).unwrap();
 }

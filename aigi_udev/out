@@ -1,59 +1,315 @@
-primary gpu founded by udev: 57857, "/dev/dri/card1"
-Other input to handle: DeviceAdded { device: Device @0x5583cba7acb0 }
-Other input to handle: DeviceAdded { device: Device @0x5583cba80ca0 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbac6d70 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbacd150 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbad4e60 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbaea630 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbafbcb0 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbb14a00 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbb24540 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbb37df0 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbb4b810 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbb606f0 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbb7a5c0 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbb80460 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbb889c0 }
-Other input to handle: DeviceAdded { device: Device @0x5583cbb90d50 }
-Forward: 25
-Forward: 25
-Forward: 25
-Forward: 25
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5eb1b0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cbc11410 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d81b0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
-Other input to handle: PointerMotion { event: PointerMotionEvent @0x5583cc5d76a0 }
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Other input to handle: DeviceAdded { device: Device @0x55fa6330fe10 }
+Other input to handle: DeviceAdded { device: Device @0x55fa63315ff0 }
+Other input to handle: DeviceAdded { device: Device @0x55fa63338880 }
+Other input to handle: DeviceAdded { device: Device @0x55fa6333f0d0 }
+Other input to handle: DeviceAdded { device: Device @0x55fa63347330 }
+Other input to handle: DeviceAdded { device: Device @0x55fa6335e4b0 }
+Other input to handle: DeviceAdded { device: Device @0x55fa63366cc0 }
+Other input to handle: DeviceAdded { device: Device @0x55fa6336d4c0 }
+Other input to handle: DeviceAdded { device: Device @0x55fa63375aa0 }
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
