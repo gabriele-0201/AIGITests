@@ -35,20 +35,25 @@ pub fn handle_input(state: &mut AIGIState, event: InputEvent<LibinputInputBacken
                     // If the user pressed the letter T, return the action value of
                     // 1.
                     if press_state == KeyState::Pressed && keysym.modified_sym() == keysyms::KEY_W {
+                        println!("WESTON-TERMINAL");
                         FilterResult::Intercept(Action::exec_process("weston-terminal"))
                     } else if press_state == KeyState::Pressed
                         && keysym.modified_sym() == keysyms::KEY_A
                     {
+                        println!("ALACRITTY");
                         FilterResult::Intercept(Action::exec_process("alacritty"))
                     } else if press_state == KeyState::Pressed
                         && keysym.modified_sym() == keysyms::KEY_V
                     {
+                        println!("SPLIT VERTICAL");
                         FilterResult::Intercept(Action::change_split(tiling::Split::Vertical))
                     } else if press_state == KeyState::Pressed
                         && keysym.modified_sym() == keysyms::KEY_O
                     {
+                        println!("SPLIT HORIZONTAL");
                         FilterResult::Intercept(Action::change_split(tiling::Split::Horizontal))
                     } else {
+                        println!("Forward: {keysym:?}");
                         FilterResult::Forward
                     }
                 },
@@ -78,7 +83,7 @@ pub fn handle_input(state: &mut AIGIState, event: InputEvent<LibinputInputBacken
 
             state.pointer_location = pointer_location;
 
-            //println!("Pointer Location: {pointer_location:?}");
+            println!("Pointer moved, New Location: {pointer_location:?}");
 
             let pointer = state.seat.get_pointer().unwrap();
 
@@ -119,6 +124,6 @@ pub fn handle_input(state: &mut AIGIState, event: InputEvent<LibinputInputBacken
                 },
             );
         }
-        _ => (),
+        event => println!("Other input to handle: {event:?}"),
     }
 }

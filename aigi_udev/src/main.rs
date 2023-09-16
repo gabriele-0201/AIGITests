@@ -97,7 +97,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut display: Display<AIGIState> = Display::new()?;
 
     // Initialize the State of the compositor
-    let mut aigi_state = AIGIState::init(&mut event_loop, &mut display, backend_data)?;
+    let mut aigi_state = AIGIState::init(event_loop.handle(), &mut display, backend_data)?;
 
     // Configure the server Socket
     let socket_notifier = ListeningSocketSource::new_auto()?;
@@ -185,13 +185,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Add remaining notifiers
 
     // Session nofifier is NOT managed for now
-    // event_loop.handle().insert_source(notifiers.session, ...);
-
-    // Drm Notifier, the VBlank Event is the trigger for the creation of the new frame
+    // event_loop.state
     event_loop
         .handle()
         .insert_source(notifiers.drm, |event, _, loop_data| match event {
             DrmEvent::VBlank(_crtc) => {
+                println!("VBlank Event!");
                 render::frame_showed(&mut loop_data.state)
                     .expect("Something wrong happened during the rendering phase");
             }
@@ -207,19 +206,31 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             handle_input(&mut loop_data.state, event);
         });
 
+    // Insert timer in the loop
+    event_loop
+        .handle()
+        .insert_source(Timer::from_duration(Duration::from_secs(5)), |_, _, _| {
+            panic!("Aborted");
+        })
+        .unwrap();
+
     while aigi_state.running.load(Ordering::SeqCst) {
         let mut loop_data = LoopData {
             state: aigi_state,
             display,
         };
         let result = event_loop.dispatch(Some(Duration::from_millis(16)), &mut loop_data);
+        LoopData {
+            state: aigi_state,
+            display,
+        } = loop_data;
 
         if result.is_err() {
-            loop_data.state.running.store(false, Ordering::SeqCst);
+            aigi_state.running.store(false, Ordering::SeqCst);
         } else {
-            loop_data.state.space.refresh();
+            aigi_state.space.refresh();
             //loop_data.state.popups.cleanup();
-            loop_data.display.flush_clients().unwrap();
+            display.flush_clients().unwrap();
         }
     }
     Ok(())

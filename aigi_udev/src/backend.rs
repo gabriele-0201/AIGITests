@@ -36,7 +36,7 @@ use smithay::{
     utils::DeviceFd,
     wayland::dmabuf::DmabufState,
 };
-use smithay_drm_extras::drm_scanner::DrmScanner;
+use smithay_drm_extras::drm_scanner::{DrmScanEvent, DrmScanner};
 
 // we cannot simply pick the first supported format of the intersection of *all* formats, because
 // - we do not want something like Abgr4444, which looses color information, if something better is available
@@ -153,7 +153,8 @@ impl BackendData {
         // Try to open the device
         let fd = session.open(
             &path,
-            OFlag::O_RDWR | OFlag::O_CLOEXEC | OFlag::O_NOCTTY | OFlag::O_NONBLOCK,
+            //OFlag::O_RDWR | OFlag::O_CLOEXEC | OFlag::O_NOCTTY | OFlag::O_NONBLOCK,
+            OFlag::empty(),
         )?;
 
         // Wrap the file descriptor into a smithay FileDescriptor
@@ -186,6 +187,7 @@ impl BackendData {
         // to make sure all newly connected outputs are initialized,
         let scan_results = drm_scanner.scan_connectors(&drm);
         // just take the first connected connector and crtc
+        /*test another approach
         let (connector, crtc) = match scan_results
             .connected
             .iter()
@@ -194,6 +196,15 @@ impl BackendData {
         {
             (connector, Some(crtc)) => (connector, crtc),
             _ => return Err("No available crtc".into()),
+        };
+        */
+
+        let (connector, crtc) = match scan_results.iter().next().unwrap() {
+            DrmScanEvent::Connected {
+                connector,
+                crtc: Some(crtc),
+            } => (connector, crtc),
+            _ => unimplemented!(),
         };
 
         // Monitors have diferent modes that can be selected, eg. 1080x1920@90hz
@@ -207,7 +218,7 @@ impl BackendData {
         let drm_mode = connector.modes()[mode_id];
 
         // Createa a surface that can be used to render stuff
-        let drm_surface = drm.create_surface(*crtc, drm_mode, &[connector.handle()])?;
+        let drm_surface = drm.create_surface(crtc, drm_mode, &[connector.handle()])?;
 
         // TODO: inside Anvil while preparing the connector also all the
         // things realted to AnvilState are prepared (like the Output or the mapping

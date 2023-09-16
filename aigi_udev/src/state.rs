@@ -308,9 +308,9 @@ delegate_dmabuf!(AIGIState);
 
 impl AIGIState {
     pub fn init(
-        event_loop: &mut EventLoop<LoopData>,
+        even_loop_handle: LoopHandle<'static, LoopData>,
         display: &mut Display<Self>,
-        backend_data: BackendData,
+        mut backend_data: BackendData,
     ) -> Result<Self, Error> {
         // Things to be done:
         // + Clock?
@@ -485,7 +485,7 @@ impl AIGIState {
         let compositor_state = CompositorState::new::<AIGIState>(&dh);
         // Shared memory buffer for sharing buffers with clients. For example wl_buffer uses wl_shm
         // to create a shared buffer for the compositor to access the surface contents of the client.
-        let shm_state = ShmState::new::<AIGIState>(&dh, vec![]);
+        let mut shm_state = ShmState::new::<AIGIState>(&dh, vec![]);
         shm_state.update_formats(renderer.shm_formats());
 
         // An output is an area of space that the compositor uses, the OutputManagerState tells
@@ -537,7 +537,7 @@ impl AIGIState {
 
         Ok(AIGIState {
             display_handle: dh,
-            handle: event_loop.handle(),
+            handle: even_loop_handle,
             space,
             compositor_state,
             xdg_shell_state,
