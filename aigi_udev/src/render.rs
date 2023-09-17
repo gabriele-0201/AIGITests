@@ -35,19 +35,15 @@ smithay::backend::renderer::element::render_elements! {
 
 pub fn frame_showed(state: &mut AIGIState) -> Result<(), Box<dyn std::error::Error>> {
     // Define the previous frame as correctly submitted
-    let gbm_surface = &mut state.backend_data.device_data.gbm_surface;
-    gbm_surface.frame_submitted();
 
-    // The Output needs to be extracted by the space,
-    // there is only one so we will extract the first one
-    let output = state
-        .space
-        .outputs()
-        .next()
-        .expect("Impossible not having an output mapped in the Space");
+    state
+        .backend_data
+        .device_data
+        .gbm_surface
+        .frame_submitted()?;
 
     // Here should be created a time to let the clients render their frames
-    let timer = match output.current_mode() {
+    let timer = match state.get_output()?.current_mode() {
         Some(mode) => Timer::from_duration(Duration::from_millis(
             ((1_000_000f32 / mode.refresh as f32) * 0.6f32) as u64,
         )),
@@ -56,35 +52,8 @@ pub fn frame_showed(state: &mut AIGIState) -> Result<(), Box<dyn std::error::Err
 
     state
         .handle
-        .insert_source(timer, move |_, _, loop_data| {
-            let mut renderer = loop_data
-                .state
-                .backend_data
-                .gpu_manager
-                .single_renderer(&loop_data.state.backend_data.device_data.render_node)
-                .unwrap();
-
-            // //AGAIN!?!?!?!?!
-            let gbm_surface = &mut loop_data.state.backend_data.device_data.gbm_surface;
-
-            let output = loop_data
-                .state
-                .space
-                .outputs()
-                .next()
-                .expect("Impossible not having an output mapped in the Space");
-
-            // render_new_frame(&mut loop_data.state, &mut renderer);
-
-            render_new_frame(
-                gbm_surface,
-                output,
-                &mut renderer,
-                loop_data.state.cursor_status.clone(),
-                loop_data.state.pointer_location.clone(),
-                &loop_data.state.space,
-            )
-            .unwrap();
+        .insert_source(timer, |_, _, loop_data| {
+            render_frame(&mut loop_data.state).unwrap();
             TimeoutAction::Drop
         })
         .expect("failed to schedule frame timer");
@@ -92,32 +61,39 @@ pub fn frame_showed(state: &mut AIGIState) -> Result<(), Box<dyn std::error::Err
     Ok(())
 }
 
-pub fn render_new_frame<'a, 'b>(
-    //state: &AIGIState,
-    gbm_surface: &mut GbmBufferedSurface<GbmAllocator<DrmDeviceFd>, ()>,
-    output: &Output,
-    renderer: &mut UdevRenderer<'a, 'b>,
-    cursor_image: CursorImageStatus,
-    pointer_location: Point<f64, Logical>,
-    space: &Space<Window>,
-) -> Result<(), Box<dyn std::error::Error>> {
-    // let mut renderer:  = state
-    //     .backend_data
-    //     .gpu_manager
-    //     .single_renderer(&state.backend_data.device_data.render_node)
-    //     .unwrap();
+pub fn render_frame<'state, 'a, 'b>(
+    state: &'state mut AIGIState,
+    // gbm_surface: &mut GbmBufferedSurface<GbmAllocator<DrmDeviceFd>, ()>,
+    // output: &Output,
+    // renderer: &mut UdevRenderer<'a, 'b>,
+    // cursor_status: CursorImageStatus,
+    // pointer_location: Point<f64, Logical>,
+    // space: &Space<Window>,
+) -> Result<(), Box<dyn std::error::Error>>
+where
+    'state: 'a + 'b,
+    'b: 'a,
+{
+    let gbm_surface = &mut state.backend_data.device_data.gbm_surface;
+    //let output = state.get_output()?;
+    let output = state.space.outputs().next().unwrap();
+    let mut renderer = state
+        .backend_data
+        .gpu_manager
+        .single_renderer(&state.backend_data.device_data.render_node)
+        .map_err(|_| "Impossible extract Renderer from State")?;
 
     // NOW LET'S PREPARE ALL THE ELEMENTS
     // only two sets for now, the cursor image and the one present in the Space
 
     // An element that renders the pointer when rendering the output to display.
-    let mut pointer_element = PointerElement::<MultiTexture>::new(renderer);
+    let mut pointer_element = PointerElement::<MultiTexture>::new(&mut renderer);
 
     // Update the pointer element with the clock to determine which xcursor image to show,
     // and the cursor status. The status can be set to a surface by a window to show a
     // custom cursor set by the window.
     //pointer_element.set_current_delay(&state.clock);
-    pointer_element.set_status(cursor_image);
+    pointer_element.set_status(state.cursor_status.clone());
 
     // Get the cursor position if the output is fractionally scaled.
     let scale = Scale::from(output.current_scale().fractional_scale());
@@ -129,9 +105,9 @@ pub fn render_new_frame<'a, 'b>(
     // Get the rendered elements from the pointer element.
     let custom_elements = pointer_element
         .render_elements::<PointerRenderElement<UdevRenderer<'a, 'b>>>(
-            renderer,
+            &mut renderer,
             //cursor_pos_scaled,
-            pointer_location.to_physical(1.0).to_i32_round(),
+            state.pointer_location.to_physical(1.0).to_i32_round(),
             scale,
             1.0,
         );
@@ -144,20 +120,17 @@ pub fn render_new_frame<'a, 'b>(
     // insered just because I can't do without
     let mut damage_tracker = OutputDamageTracker::from_output(&output);
 
-    // type UdevRenderer<'a, 'b> =
-    // MultiRenderer<'a, 'a, 'b, GbmGlesBackend<GlesRenderer>, GbmGlesBackend<GlesRenderer>>; // size = 112 (0x70), align = 0x8
-
     smithay::desktop::space::render_output::<_, PointerRenderElement<UdevRenderer<'a, 'b>>, _, _>(
         &output,
-        renderer,
+        &mut renderer,
         1.0,
         0,
-        [space],
+        [&state.space],
         custom_elements.as_slice(),
         &mut damage_tracker,
         [0.1, 0.1, 0.1, 1.0],
     )
-    .unwrap();
+    .map_err(|_| "Impossible render Space")?;
 
     gbm_surface.queue_buffer(None, None, ()).unwrap();
 
@@ -173,45 +146,4 @@ pub fn render_new_frame<'a, 'b>(
     //});
 
     Ok(())
-}
-
-pub fn initial_rendering<'a, 'b>(
-    /*state: &mut AIGIState*/
-    gbm_surface: &mut GbmBufferedSurface<GbmAllocator<DrmDeviceFd>, ()>,
-    output: &Output,
-    renderer: &mut UdevRenderer<'a, 'b>,
-    space: &Space<Window>,
-) {
-    // let surface = &mut state.backend_data.device_data.gbm_surface;
-    // let mut renderer = state
-    //     .backend_data
-    //     .gpu_manager
-    //     .single_renderer(&state.backend_data.device_data.render_node)
-    //     .unwrap();
-
-    let (dmabuf, age) = gbm_surface.next_buffer().unwrap();
-    renderer.bind(dmabuf).unwrap();
-
-    // let output = state
-    //     .space
-    //     .outputs()
-    //     .next()
-    //     .expect("Impossible not having an output mapped in the Space");
-
-    // insered just because I can't do without
-    let mut damage_tracker = OutputDamageTracker::from_output(&output);
-
-    smithay::desktop::space::render_output::<_, PointerRenderElement<UdevRenderer<'a, 'b>>, _, _>(
-        output,
-        renderer,
-        1.0,
-        0,
-        [space],
-        &[],
-        &mut damage_tracker,
-        [0.1, 0.1, 0.1, 1.0],
-    )
-    .unwrap();
-
-    gbm_surface.queue_buffer(None, None, ()).unwrap();
 }

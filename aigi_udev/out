@@ -1,5 +1,21 @@
 Default cursor
 custom elements len: 1
+Other input to handle: DeviceAdded { device: Device @0x562c8ba11750 }
+Other input to handle: DeviceAdded { device: Device @0x562c8ba17770 }
+Other input to handle: DeviceAdded { device: Device @0x562c8ba60090 }
+Other input to handle: DeviceAdded { device: Device @0x562c8ba660e0 }
+Other input to handle: DeviceAdded { device: Device @0x562c8ba6dd80 }
+Other input to handle: DeviceAdded { device: Device @0x562c8ba831b0 }
+Other input to handle: DeviceAdded { device: Device @0x562c8ba94d60 }
+Other input to handle: DeviceAdded { device: Device @0x562c8baadbe0 }
+Other input to handle: DeviceAdded { device: Device @0x562c8babd6f0 }
+Other input to handle: DeviceAdded { device: Device @0x562c8bad0f90 }
+Other input to handle: DeviceAdded { device: Device @0x562c8bae49b0 }
+Other input to handle: DeviceAdded { device: Device @0x562c8baf9890 }
+Other input to handle: DeviceAdded { device: Device @0x562c8bb0afe0 }
+Other input to handle: DeviceAdded { device: Device @0x562c8bb184c0 }
+Other input to handle: DeviceAdded { device: Device @0x562c8bb20970 }
+Other input to handle: DeviceAdded { device: Device @0x562c8bb28eb0 }
 Default cursor
 custom elements len: 1
 Default cursor
@@ -48,15 +64,6 @@ Default cursor
 custom elements len: 1
 Default cursor
 custom elements len: 1
-Other input to handle: DeviceAdded { device: Device @0x55fa6330fe10 }
-Other input to handle: DeviceAdded { device: Device @0x55fa63315ff0 }
-Other input to handle: DeviceAdded { device: Device @0x55fa63338880 }
-Other input to handle: DeviceAdded { device: Device @0x55fa6333f0d0 }
-Other input to handle: DeviceAdded { device: Device @0x55fa63347330 }
-Other input to handle: DeviceAdded { device: Device @0x55fa6335e4b0 }
-Other input to handle: DeviceAdded { device: Device @0x55fa63366cc0 }
-Other input to handle: DeviceAdded { device: Device @0x55fa6336d4c0 }
-Other input to handle: DeviceAdded { device: Device @0x55fa63375aa0 }
 Default cursor
 custom elements len: 1
 Default cursor
@@ -311,5 +318,65 @@ Default cursor
 custom elements len: 1
 Default cursor
 custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Forward: 50
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+WESTON-TERMINAL
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+TILE: RefCell { value: Tile: geometry: Rectangle<Logical> { x: 0, y: 0, width: 1920, height: 1080 }, container_is_none: true }
+Default cursor
+custom elements len: 1
+Default cursor
+custom elements len: 1
+Forward: 25
 Default cursor
 custom elements len: 1

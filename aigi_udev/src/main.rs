@@ -8,7 +8,6 @@ mod tiling;
 use backend::BackendData;
 use input_handler::{handle_input, Action};
 use pointer::{PointerElement, PointerRenderElement};
-use render::initial_rendering;
 use state::{AIGIState, ClientState};
 
 use anyhow::{Error, Result};
@@ -146,8 +145,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Set the output of a space with coordinates for the upper left corner of the surface.
     aigi_state.space.map_output(&output, (0, 0));
 
-    let mut damage_tracker = OutputDamageTracker::from_output(&output);
-
     // Let's create the Dmabuf Global
     let _global = aigi_state
         .dmabuf_state
@@ -156,9 +153,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             &aigi_state.dmabuf_default_feedback,
         );
 
-    // TODO remaining things!! (not sure about what is missing beside rendering)
-
-    // set up notifiers
+    // Set up notifiers:
 
     // Add Wayland socket to event loop
     event_loop
@@ -216,21 +211,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .unwrap();
 
     // initial rendering
-    let mut renderer = aigi_state
-        .backend_data
-        .gpu_manager
-        .single_renderer(&aigi_state.backend_data.device_data.render_node)
-        .unwrap();
-
-    // //AGAIN!?!?!?!?!
-    let gbm_surface = &mut aigi_state.backend_data.device_data.gbm_surface;
-
-    let output = aigi_state
-        .space
-        .outputs()
-        .next()
-        .expect("Impossible not having an output mapped in the Space");
-    initial_rendering(gbm_surface, &output, &mut renderer, &aigi_state.space);
+    render::render_frame(&mut aigi_state)?;
 
     while aigi_state.running.load(Ordering::SeqCst) {
         let mut loop_data = LoopData {

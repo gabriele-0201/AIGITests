@@ -7,6 +7,7 @@ use anyhow::{Error, Result};
 use smithay::backend::allocator::dmabuf::Dmabuf;
 use smithay::backend::renderer::{ImportDma, ImportMemWl};
 use smithay::delegate_dmabuf;
+use smithay::output::Output;
 use smithay::reexports::calloop::LoopHandle;
 use smithay::wayland::dmabuf::{
     DmabufFeedback, DmabufFeedbackBuilder, DmabufGlobal, DmabufHandler, DmabufState, ImportError,
@@ -554,5 +555,12 @@ impl AIGIState {
             dmabuf_default_feedback,
             dmabuf_state,
         })
+    }
+
+    pub fn get_output(&mut self) -> Result<&Output, Box<dyn std::error::Error>> {
+        self.space
+            .outputs()
+            .next()
+            .ok_or("No output available".into())
     }
 }
