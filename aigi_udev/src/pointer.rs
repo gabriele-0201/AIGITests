@@ -126,7 +126,6 @@ where
         match &self.status {
             CursorImageStatus::Hidden => vec![],
             CursorImageStatus::Default => {
-                println!("Default cursor");
                 if let Some(texture) = self.texture.as_ref() {
                     vec![PointerRenderElement::<R>::from(
                         TextureRenderElement::from_texture_buffer(
@@ -143,7 +142,6 @@ where
                 }
             }
             CursorImageStatus::Surface(surface) => {
-                println!("Default surface");
                 let elements: Vec<PointerRenderElement<R>> =
                     smithay::backend::renderer::element::surface::render_elements_from_surface_tree(
                         renderer, surface, location, scale, alpha,

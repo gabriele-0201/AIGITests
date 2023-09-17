@@ -129,6 +129,49 @@ pub fn handle_input(state: &mut AIGIState, event: InputEvent<LibinputInputBacken
         }
         InputEvent::PointerMotion { event, .. } => {
             state.pointer_location += event.delta();
+
+            println!("Pointer moved, New Location: {:?}", state.pointer_location);
+
+            let pointer = state.seat.get_pointer().unwrap();
+
+            // Get the surface below the pointer if it exists. First get the
+            // element under a position, then get the surface under that position.
+            let surface_under_pointer =
+                state
+                    .space
+                    .element_under(state.pointer_location)
+                    .and_then(|(window, location)| {
+                        window
+                            .surface_under(
+                                state.pointer_location - location.to_f64(),
+                                smithay::desktop::WindowSurfaceType::ALL,
+                            )
+                            .map(|(s, p)| (s, p + location))
+                    });
+
+            println!("surface under pointer: {:?}", surface_under_pointer);
+
+            let mut serial = SERIAL_COUNTER.next_serial();
+            state.seat.get_keyboard().unwrap().set_focus(
+                state,
+                surface_under_pointer
+                    .as_ref()
+                    .and_then(|s| Some(s.0.clone())),
+                serial,
+            );
+
+            serial = SERIAL_COUNTER.next_serial();
+
+            // Send the motion event to the client.
+            pointer.motion(
+                state,
+                surface_under_pointer,
+                &smithay::input::pointer::MotionEvent {
+                    location: state.pointer_location,
+                    serial,
+                    time: event.time_msec(),
+                },
+            );
         }
         event => println!("Other input to handle: {event:?}"),
     }

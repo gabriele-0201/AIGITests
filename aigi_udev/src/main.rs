@@ -200,15 +200,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .handle()
         .insert_source(notifiers.libinput, |event, _, loop_data| {
             handle_input(&mut loop_data.state, event);
-        });
+        })?;
 
     // Insert timer in the loop
-    event_loop
-        .handle()
-        .insert_source(Timer::from_duration(Duration::from_secs(5)), |_, _, _| {
+    event_loop.handle().insert_source(
+        Timer::from_duration(Duration::from_secs(10)),
+        |_, _, _| {
             panic!("Aborted");
-        })
-        .unwrap();
+        },
+    )?;
 
     // initial rendering
     render::render_frame(&mut aigi_state)?;

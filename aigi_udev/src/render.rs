@@ -100,8 +100,6 @@ where
     //let cursor_pos = pointer_location;
     //let cursor_pos_scaled = cursor_pos.to_physical(scale).to_i32_round();
 
-    // println!("cursor pos: {:?}", cursor_pos);
-
     // Get the rendered elements from the pointer element.
     let custom_elements = pointer_element
         .render_elements::<PointerRenderElement<UdevRenderer<'a, 'b>>>(
@@ -111,8 +109,6 @@ where
             scale,
             1.0,
         );
-
-    println!("custom elements len: {}", custom_elements.len());
 
     let (dmabuf, age) = gbm_surface.next_buffer()?;
     renderer.bind(dmabuf)?;
