@@ -8,6 +8,7 @@ use smithay::{
     },
     input::keyboard::{keysyms, FilterResult},
     utils::SERIAL_COUNTER,
+    wayland::seat::WaylandFocus,
 };
 
 use crate::{state::AIGIState, tiling};
@@ -128,11 +129,18 @@ pub fn handle_input(state: &mut AIGIState, event: InputEvent<LibinputInputBacken
             );
         }
         InputEvent::PointerMotion { event, .. } => {
-            state.pointer_location += event.delta();
+            let mut pointer_location = state.pointer_location;
+            pointer_location += event.delta();
 
-            println!("Pointer moved, New Location: {:?}", state.pointer_location);
+            // clamp to screen coords
+            // self.clamp_coords(&mut pointer_location);
 
-            let pointer = state.seat.get_pointer().unwrap();
+            state.pointer_location = pointer_location;
+
+            let pointer = state
+                .seat
+                .get_pointer()
+                .expect("Impossible not available pointer in seat");
 
             // Get the surface below the pointer if it exists. First get the
             // element under a position, then get the surface under that position.
@@ -141,17 +149,18 @@ pub fn handle_input(state: &mut AIGIState, event: InputEvent<LibinputInputBacken
                     .space
                     .element_under(state.pointer_location)
                     .and_then(|(window, location)| {
-                        window
-                            .surface_under(
-                                state.pointer_location - location.to_f64(),
-                                smithay::desktop::WindowSurfaceType::ALL,
-                            )
-                            .map(|(s, p)| (s, p + location))
+                        Some((
+                            window
+                                .wl_surface()
+                                .expect("Impossible extract wl_surface from window"),
+                            location,
+                        ))
                     });
-
             println!("surface under pointer: {:?}", surface_under_pointer);
 
             let mut serial = SERIAL_COUNTER.next_serial();
+
+            // set wl_surface focus
             state.seat.get_keyboard().unwrap().set_focus(
                 state,
                 surface_under_pointer
@@ -165,13 +174,23 @@ pub fn handle_input(state: &mut AIGIState, event: InputEvent<LibinputInputBacken
             // Send the motion event to the client.
             pointer.motion(
                 state,
-                surface_under_pointer,
+                surface_under_pointer.clone(),
                 &smithay::input::pointer::MotionEvent {
-                    location: state.pointer_location,
+                    location: pointer_location,
                     serial,
                     time: event.time_msec(),
                 },
             );
+
+            pointer.relative_motion(
+                state,
+                surface_under_pointer,
+                &smithay::input::pointer::RelativeMotionEvent {
+                    delta: event.delta(),
+                    delta_unaccel: event.delta_unaccel(),
+                    utime: event.time(),
+                },
+            )
         }
         event => println!("Other input to handle: {event:?}"),
     }
