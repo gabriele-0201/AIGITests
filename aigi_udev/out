@@ -1,58 +1,207 @@
-Other input to handle: DeviceAdded { device: Device @0x558f07812210 }
-Other input to handle: DeviceAdded { device: Device @0x558f07818300 }
-Other input to handle: DeviceAdded { device: Device @0x558f0781f190 }
-Other input to handle: DeviceAdded { device: Device @0x558f07841e40 }
-Other input to handle: DeviceAdded { device: Device @0x558f07849ed0 }
-Other input to handle: DeviceAdded { device: Device @0x558f078573e0 }
-Other input to handle: DeviceAdded { device: Device @0x558f07869f80 }
-Other input to handle: DeviceAdded { device: Device @0x558f07870720 }
-Other input to handle: DeviceAdded { device: Device @0x558f078789c0 }
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
+Other input to handle: DeviceAdded { device: Device @0x5644ef0c5d90 }
+Other input to handle: DeviceAdded { device: Device @0x5644ef0cbf30 }
+Other input to handle: DeviceAdded { device: Device @0x5644ef0ee0a0 }
+Other input to handle: DeviceAdded { device: Device @0x5644ef0f48f0 }
+Other input to handle: DeviceAdded { device: Device @0x5644ef0fcbb0 }
+Other input to handle: DeviceAdded { device: Device @0x5644ef118fb0 }
+Other input to handle: DeviceAdded { device: Device @0x5644ef11cde0 }
+Other input to handle: DeviceAdded { device: Device @0x5644ef1235e0 }
+Other input to handle: DeviceAdded { device: Device @0x5644ef12bbc0 }
 Forward: 50
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
-surface under pointer: None
 WESTON-TERMINAL
+Forward: 25
 TILE: RefCell { value: Tile: geometry: Rectangle<Logical> { x: 0, y: 0, width: 1920, height: 1080 }, container_is_none: true }
 Forward: 50
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+Forward: 50
+WESTON-TERMINAL
 Forward: 25
+TILE: RefCell { value: Tile: geometry: Rectangle<Logical> { x: 0, y: 0, width: 1920, height: 540 }, container_is_none: false }
+TILE: RefCell { value: Tile: geometry: Rectangle<Logical> { x: 0, y: 540, width: 1920, height: 540 }, container_is_none: false }
+WESTON-TERMINAL
+Forward: 25
+TILE: RefCell { value: Tile: geometry: Rectangle<Logical> { x: 0, y: 0, width: 1920, height: 270 }, container_is_none: false }
+TILE: RefCell { value: Tile: geometry: Rectangle<Logical> { x: 0, y: 270, width: 1920, height: 270 }, container_is_none: false }
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+WESTON-TERMINAL
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+Forward: 25
+TILE: RefCell { value: Tile: geometry: Rectangle<Logical> { x: 0, y: 270, width: 1920, height: 135 }, container_is_none: false }
+TILE: RefCell { value: Tile: geometry: Rectangle<Logical> { x: 0, y: 405, width: 1920, height: 135 }, container_is_none: false }
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+WESTON-TERMINAL
+Forward: 25
+TILE: RefCell { value: Tile: geometry: Rectangle<Logical> { x: 0, y: 405, width: 1920, height: 67 }, container_is_none: false }
+TILE: RefCell { value: Tile: geometry: Rectangle<Logical> { x: 0, y: 472, width: 1920, height: 67 }, container_is_none: false }
+Forward: 50
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[3], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 373 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
+surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[2], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: 238 }))
 surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
 surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
 surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
@@ -86,14 +235,6 @@ surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), ver
 surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
 surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
 surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-Forward: 54
-Forward: 31
-Forward: 54
-Forward: 31
-Forward: 38
-Forward: 32
-Forward: 38
-Forward: 32
 surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
 surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
 surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
@@ -101,153 +242,57 @@ surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), ver
 surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
 surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
 surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-Forward: 54
-Forward: 31
-Forward: 54
-Forward: 31
-Forward: 38
-Forward: 32
-Forward: 38
-Forward: 32
-Forward: 65
-Forward: 65
-Forward: 54
-Forward: 32
-Forward: 54
-Forward: 32
-Forward: 58
-Forward: 26
-Forward: 58
-Forward: 65
-Forward: 26
-Forward: 65
-Forward: 55
-Forward: 38
-Forward: 55
-Forward: 65
-Forward: 38
-Forward: 65
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-Other input to handle: PointerButton { event: PointerButtonEvent @0x558f08326d70 }
-Other input to handle: PointerButton { event: PointerButtonEvent @0x558f08326d70 }
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-surface under pointer: Some((WlSurface { id: ObjectId(wl_surface@10[0], 10), version: 3, data: Some(Any { .. }), handle: WeakHandle { handle: WeakInnerHandle[rs] { .. } } }, Point<Logical> { x: -32, y: -32 }))
-Forward: 54
-Forward: 38
-Forward: 54
-Forward: 38
-Forward: 43
-Forward: 38
-Forward: 39
-Forward: 43
-Forward: 45
-Forward: 44
-Forward: 39
-Forward: 38
-Forward: 54
-Forward: 45
-Forward: 44
-Forward: 54
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 40
+Forward: 41
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42
+Forward: 41
+Forward: 40
+Forward: 42

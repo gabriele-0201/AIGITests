@@ -131,15 +131,16 @@ where
     gbm_surface.queue_buffer(None, None, ()).unwrap();
 
     // TODO: is this important?
-    // For each of the windows send the frame callbacks to windows telling them to draw.
-    //state.space.elements().for_each(|window| {
-    //    window.send_frame(
-    //        &output,
-    //        start_time.elapsed(),
-    //        Some(core::time::Duration::ZERO),
-    //        |_, _| Some(output.clone()),
-    //    )
-    //});
+    // For each of the windows send the frame callbacks to windows telling them to draw
+    // the new frame.
+    state.space.elements().for_each(|window| {
+        window.send_frame(
+            &output,
+            state.clock.now(),
+            Some(core::time::Duration::ZERO),
+            |_, _| Some(output.clone()),
+        )
+    });
 
     Ok(())
 }

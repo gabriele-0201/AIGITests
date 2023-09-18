@@ -9,6 +9,7 @@ use smithay::backend::renderer::{ImportDma, ImportMemWl};
 use smithay::delegate_dmabuf;
 use smithay::output::Output;
 use smithay::reexports::calloop::LoopHandle;
+use smithay::utils::{Clock, Monotonic};
 use smithay::wayland::dmabuf::{
     DmabufFeedback, DmabufFeedbackBuilder, DmabufGlobal, DmabufHandler, DmabufState, ImportError,
 };
@@ -91,6 +92,7 @@ pub struct AIGIState {
 
     // tiling state
     pub tiling_state: TilingState,
+    pub clock: Clock<Monotonic>,
 }
 
 impl CompositorHandler for AIGIState {
@@ -313,8 +315,11 @@ impl AIGIState {
         display: &mut Display<Self>,
         mut backend_data: BackendData,
     ) -> Result<Self, Error> {
+        let clock = Clock::new().expect("failed to initialize clock");
+
         // Things to be done:
         // + Clock?
+        //      + for now ONLY used in the send_frame function to clients
         // + Init the wayland socket to accept connections by the clients
         // + Init all the Globals
         // + Init the input
@@ -554,6 +559,7 @@ impl AIGIState {
             backend_data,
             dmabuf_default_feedback,
             dmabuf_state,
+            clock,
         })
     }
 
