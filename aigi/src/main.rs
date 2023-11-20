@@ -204,7 +204,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Insert timer in the loop
     event_loop.handle().insert_source(
-        Timer::from_duration(Duration::from_secs(10)),
+        Timer::from_duration(Duration::from_secs(30)),
         |_, _, _| {
             panic!("Aborted");
         },

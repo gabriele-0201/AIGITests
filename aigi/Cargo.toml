@@ -1,12 +1,12 @@
 [package]
-name = "aigi_udev"
+name = "aigi"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-smithay = {git = "https://github.com/Smithay/smithay"}
-smithay-drm-extras = {git = "https://github.com/Smithay/smithay"}
+smithay = {git = "https://github.com/Smithay/smithay", rev = "1a61e1c"}
+smithay-drm-extras = {git = "https://github.com/Smithay/smithay", rev = "1a61e1c"}
 anyhow = "1.0.75"
 xcursor = "0.3.4"
